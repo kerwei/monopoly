@@ -1,0 +1,21 @@
+{
+    "board-sg": {
+        "0": {
+            "name": "Geylang Road",
+            "color": "purple",
+            "cost": {
+                "title": 600,
+                "house": 100,
+                "hotel": 500
+            },
+            "schedule": {
+                "title": {
+                    "1": 100,
+                    "2": 150
+                },
+                "house": 50,
+                "hotel": 250
+            }
+        }
+    }
+}
