@@ -1,18 +1,25 @@
 import json
+import os
 import unittest2
 
 import board
 import player
 
 
+ROOTDIR = os.path.dirname(os.path.dirname(__file__))
+DATADIR = os.path.join(ROOTDIR, 'data')
+
+
 class TestCreateBoard(unittest2.TestCase):
     def setUp(self) -> None:
         # Load the monopoly-sg schema
-        with open('res/schema_monopoly_sg.json', 'r') as f:
+        with open(
+            os.path.join(DATADIR, 'schema_monopoly_sg.json'), 'r'
+        ) as f:
             self.schema = json.load(f)
 
         self.players = ['apple','boot','car','dog']
-        self.roster{
+        self.roster = {
             'apple': None,
             'boot': None,
             'car': None,
