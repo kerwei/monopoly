@@ -1,7 +1,6 @@
 {
     "board-sg": {
-        "0": {
-            "name": "Geylang Road",
+        "Geylang Road": {
             "color": "purple",
             "cost": {
                 "title": 600,
