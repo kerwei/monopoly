@@ -1,9 +1,504 @@
 {
     "board-sg": {
         "Geylang Road": {
+            "type": "property",
             "color": "purple",
             "cost": {
                 "title": 600,
+                "house": 100,
+                "hotel": 500
+            },
+            "schedule": {
+                "title": {
+                    "1": 100,
+                    "2": 150
+                },
+                "house": 50,
+                "hotel": 250
+            }
+        },
+        "Community Chest 1": {
+            "type": "event"
+        },
+        "Serangoon Road": {
+            "type": "property",
+            "color": "purple",
+            "cost": {
+                "title": 600,
+                "house": 100,
+                "hotel": 500
+            },
+            "schedule": {
+                "title": {
+                    "1": 100,
+                    "2": 150
+                },
+                "house": 50,
+                "hotel": 250
+            }
+        },
+        "Income Tax": {
+            "type": "event"
+        },
+        "Ang Mo Kio Station": {
+            "type": "infra",
+            "color": "black",
+            "cost": {
+                "title": 2000
+            },
+            "schedule": {
+                "title": {
+                    "1": 500,
+                    "2": 1000,
+                    "3": 1500,
+                    "4": 2000
+                }
+            }
+        },
+        "Farrer Road": {
+            "type": "property",
+            "color": "grey",
+            "cost": {
+                "title": 1000,
+                "house": 100,
+                "hotel": 500
+            },
+            "schedule": {
+                "title": {
+                    "1": 100,
+                    "2": 150,
+                    "3": 300
+                },
+                "house": 50,
+                "hotel": 250
+            }
+        },
+        "Chance 1": {
+            "type": "event"
+        },
+        "Braddell Road": {
+            "type": "property",
+            "color": "grey",
+            "cost": {
+                "title": 1000,
+                "house": 100,
+                "hotel": 500
+            },
+            "schedule": {
+                "title": {
+                    "1": 100,
+                    "2": 150,
+                    "3": 300
+                },
+                "house": 50,
+                "hotel": 250
+            }
+        },
+        "Thomson Road": {
+            "type": "property",
+            "color": "grey",
+            "cost": {
+                "title": 1200,
+                "house": 100,
+                "hotel": 500
+            },
+            "schedule": {
+                "title": {
+                    "1": 100,
+                    "2": 150,
+                    "3": 300
+                },
+                "house": 50,
+                "hotel": 250
+            }
+        },
+        "Jail": {
+            "type": "static"
+        },
+        "Battery Road": {
+            "type": "property",
+            "color": "pink",
+            "cost": {
+                "title": 1400,
+                "house": 100,
+                "hotel": 500
+            },
+            "schedule": {
+                "title": {
+                    "1": 100,
+                    "2": 150,
+                    "3": 300
+                },
+                "house": 50,
+                "hotel": 250
+            }
+        },
+        "Electric Company": {
+            "type": "infra",
+            "color": "white",
+            "cost": {
+                "title": 1500
+            },
+            "schedule": {
+                "title": {
+                    "1": 350,
+                    "2": 700
+                }
+            }
+        },
+        "Empress Place": {
+            "type": "property",
+            "color": "pink",
+            "cost": {
+                "title": 1400,
+                "house": 100,
+                "hotel": 500
+            },
+            "schedule": {
+                "title": {
+                    "1": 100,
+                    "2": 150,
+                    "3": 300
+                },
+                "house": 50,
+                "hotel": 250
+            }
+        },
+        "Connaught Drive": {
+            "type": "property",
+            "color": "pink",
+            "cost": {
+                "title": 1600,
+                "house": 100,
+                "hotel": 500
+            },
+            "schedule": {
+                "title": {
+                    "1": 100,
+                    "2": 150,
+                    "3": 300
+                },
+                "house": 50,
+                "hotel": 250
+            }
+        },
+        "City Hall Station": {
+            "type": "infra",
+            "color": "black",
+            "cost": {
+                "title": 2000
+            },
+            "schedule": {
+                "title": {
+                    "1": 500,
+                    "2": 1000,
+                    "3": 1500,
+                    "4": 2000
+                }
+            }
+        },
+        "Colombo Court": {
+            "type": "property",
+            "color": "orange",
+            "cost": {
+                "title": 1800,
+                "house": 100,
+                "hotel": 500
+            },
+            "schedule": {
+                "title": {
+                    "1": 100,
+                    "2": 150,
+                    "3": 300
+                },
+                "house": 50,
+                "hotel": 250
+            }
+        },
+        "Community Chest 2": {
+            "type": "event"
+        },
+        "Havelock Road": {
+            "type": "property",
+            "color": "orange",
+            "cost": {
+                "title": 1800,
+                "house": 100,
+                "hotel": 500
+            },
+            "schedule": {
+                "title": {
+                    "1": 100,
+                    "2": 150,
+                    "3": 300
+                },
+                "house": 50,
+                "hotel": 250
+            }
+        },
+        "St. Andrew's Road": {
+            "type": "property",
+            "color": "orange",
+            "cost": {
+                "title": 2000,
+                "house": 100,
+                "hotel": 500
+            },
+            "schedule": {
+                "title": {
+                    "1": 100,
+                    "2": 150,
+                    "3": 300
+                },
+                "house": 50,
+                "hotel": 250
+            }
+        },
+        "Free Parking": {
+            "type": "static"
+        },
+        "Robinson Road": {
+            "type": "property",
+            "color": "red",
+            "cost": {
+                "title": 2200,
+                "house": 100,
+                "hotel": 500
+            },
+            "schedule": {
+                "title": {
+                    "1": 100,
+                    "2": 150,
+                    "3": 300
+                },
+                "house": 50,
+                "hotel": 250
+            }
+        },
+        "Chance 2": {
+            "type": "event"
+        },
+        "Shenton Way": {
+            "type": "property",
+            "color": "red",
+            "cost": {
+                "title": 2200,
+                "house": 100,
+                "hotel": 500
+            },
+            "schedule": {
+                "title": {
+                    "1": 100,
+                    "2": 150,
+                    "3": 300
+                },
+                "house": 50,
+                "hotel": 250
+            }
+        },
+        "Collyer Quay": {
+            "type": "property",
+            "color": "red",
+            "cost": {
+                "title": 2400,
+                "house": 100,
+                "hotel": 500
+            },
+            "schedule": {
+                "title": {
+                    "1": 100,
+                    "2": 150,
+                    "3": 300
+                },
+                "house": 50,
+                "hotel": 250
+            }
+        },
+        "Jurong East Station": {
+            "type": "property",
+            "color": "black",
+            "cost": {
+                "title": 2000
+            },
+            "schedule": {
+                "title": {
+                    "1": 500,
+                    "2": 1000,
+                    "3": 1500,
+                    "4": 2000
+                }
+            }
+        },
+        "Marina Square": {
+            "type": "property",
+            "color": "yellow",
+            "cost": {
+                "title": 2600,
+                "house": 100,
+                "hotel": 500
+            },
+            "schedule": {
+                "title": {
+                    "1": 100,
+                    "2": 150,
+                    "3": 300
+                },
+                "house": 50,
+                "hotel": 250
+            }
+        },
+        "Emerald Hill": {
+            "type": "property",
+            "color": "yellow",
+            "cost": {
+                "title": 2600,
+                "house": 100,
+                "hotel": 500
+            },
+            "schedule": {
+                "title": {
+                    "1": 100,
+                    "2": 150,
+                    "3": 300
+                },
+                "house": 50,
+                "hotel": 250
+            }
+        },
+        "Water Works": {
+            "type": "infra",
+            "color": "white",
+            "cost": {
+                "title": 1500
+            },
+            "schedule": {
+                "title": {
+                    "1": 350,
+                    "2": 700
+                }
+            }
+        },
+        "Raffles City": {
+            "type": "property",
+            "color": "yellow",
+            "cost": {
+                "title": 2800,
+                "house": 100,
+                "hotel": 500
+            },
+            "schedule": {
+                "title": {
+                    "1": 100,
+                    "2": 150,
+                    "3": 300
+                },
+                "house": 50,
+                "hotel": 250
+            }
+        },
+        "Go To Jail": {
+            "type": "event"
+        },
+        "Tanglin Road": {
+            "type": "property",
+            "color": "green",
+            "cost": {
+                "title": 3000,
+                "house": 100,
+                "hotel": 500
+            },
+            "schedule": {
+                "title": {
+                    "1": 100,
+                    "2": 150,
+                    "3": 300
+                },
+                "house": 50,
+                "hotel": 250
+            }
+        },
+        "Orchard Road": {
+            "type": "property",
+            "color": "green",
+            "cost": {
+                "title": 3000,
+                "house": 100,
+                "hotel": 500
+            },
+            "schedule": {
+                "title": {
+                    "1": 100,
+                    "2": 150,
+                    "3": 300
+                },
+                "house": 50,
+                "hotel": 250
+            }
+        },
+        "Community Chest 3": {
+            "type": "event"
+        },
+        "Scott's Road": {
+            "type": "property",
+            "color": "green",
+            "cost": {
+                "title": 3200,
+                "house": 100,
+                "hotel": 500
+            },
+            "schedule": {
+                "title": {
+                    "1": 100,
+                    "2": 150,
+                    "3": 300
+                },
+                "house": 50,
+                "hotel": 250
+            }
+        },
+        "Bedok Station": {
+            "type": "property",
+            "color": "black",
+            "cost": {
+                "title": 2000
+            },
+            "schedule": {
+                "title": {
+                    "1": 500,
+                    "2": 1000,
+                    "3": 1500,
+                    "4": 2000
+                }
+            }
+        },
+        "Chance 3": {
+            "type": "event"
+        },
+        "Nassim Road": {
+            "type": "property",
+            "color": "blue",
+            "cost": {
+                "title": 3500,
+                "house": 100,
+                "hotel": 500
+            },
+            "schedule": {
+                "title": {
+                    "1": 100,
+                    "2": 150
+                },
+                "house": 50,
+                "hotel": 250
+            }
+        },
+        "Super Tax": {
+            "type": "event"
+        },
+        "Queen Astrid Park": {
+            "type": "property",
+            "color": "blue",
+            "cost": {
+                "title": 4000,
                 "house": 100,
                 "hotel": 500
             },
