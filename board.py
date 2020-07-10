@@ -12,7 +12,12 @@ class Board:
         self.roster = {
             i: player.Player(token) for i, token in enumerate(lst_player)
         }
-        self.schema = schema
+
+        self.lst_tile = []
+        for k, v in schema['board-sg'].items():
+            v['name'] = k
+            self.lst_tile += [tile.Tile(v)]
+
 
     def assign_turns(self):
         """
