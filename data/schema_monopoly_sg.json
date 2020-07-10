@@ -1,6 +1,7 @@
 {
     "board-sg": {
         "Geylang Road": {
+            "idx": 0,
             "type": "property",
             "color": "purple",
             "cost": {
@@ -18,9 +19,11 @@
             }
         },
         "Community Chest 1": {
+            "idx": 1,
             "type": "event"
         },
         "Serangoon Road": {
+            "idx": 2,
             "type": "property",
             "color": "purple",
             "cost": {
@@ -38,9 +41,11 @@
             }
         },
         "Income Tax": {
+            "idx": 3,
             "type": "event"
         },
         "Ang Mo Kio Station": {
+            "idx": 4,
             "type": "infra",
             "color": "black",
             "cost": {
@@ -56,6 +61,7 @@
             }
         },
         "Farrer Road": {
+            "idx": 5,
             "type": "property",
             "color": "grey",
             "cost": {
@@ -74,9 +80,11 @@
             }
         },
         "Chance 1": {
+            "idx": 6,
             "type": "event"
         },
         "Braddell Road": {
+            "idx": 7,
             "type": "property",
             "color": "grey",
             "cost": {
@@ -95,6 +103,7 @@
             }
         },
         "Thomson Road": {
+            "idx": 8,
             "type": "property",
             "color": "grey",
             "cost": {
@@ -113,9 +122,11 @@
             }
         },
         "Jail": {
+            "idx": 9,
             "type": "static"
         },
         "Battery Road": {
+            "idx": 10,
             "type": "property",
             "color": "pink",
             "cost": {
@@ -134,6 +145,7 @@
             }
         },
         "Electric Company": {
+            "idx": 11,
             "type": "infra",
             "color": "white",
             "cost": {
@@ -147,6 +159,7 @@
             }
         },
         "Empress Place": {
+            "idx": 12,
             "type": "property",
             "color": "pink",
             "cost": {
@@ -165,6 +178,7 @@
             }
         },
         "Connaught Drive": {
+            "idx": 13,
             "type": "property",
             "color": "pink",
             "cost": {
@@ -183,6 +197,7 @@
             }
         },
         "City Hall Station": {
+            "idx": 14,
             "type": "infra",
             "color": "black",
             "cost": {
@@ -198,6 +213,7 @@
             }
         },
         "Colombo Court": {
+            "idx": 15,
             "type": "property",
             "color": "orange",
             "cost": {
@@ -216,9 +232,11 @@
             }
         },
         "Community Chest 2": {
+            "idx": 16,
             "type": "event"
         },
         "Havelock Road": {
+            "idx": 17,
             "type": "property",
             "color": "orange",
             "cost": {
@@ -237,6 +255,7 @@
             }
         },
         "St. Andrew's Road": {
+            "idx": 18,
             "type": "property",
             "color": "orange",
             "cost": {
@@ -255,9 +274,11 @@
             }
         },
         "Free Parking": {
+            "idx": 19,
             "type": "static"
         },
         "Robinson Road": {
+            "idx": 20,
             "type": "property",
             "color": "red",
             "cost": {
@@ -276,9 +297,11 @@
             }
         },
         "Chance 2": {
+            "idx": 21,
             "type": "event"
         },
         "Shenton Way": {
+            "idx": 22,
             "type": "property",
             "color": "red",
             "cost": {
@@ -297,6 +320,7 @@
             }
         },
         "Collyer Quay": {
+            "idx": 23,
             "type": "property",
             "color": "red",
             "cost": {
@@ -315,6 +339,7 @@
             }
         },
         "Jurong East Station": {
+            "idx": 24,
             "type": "property",
             "color": "black",
             "cost": {
@@ -330,6 +355,7 @@
             }
         },
         "Marina Square": {
+            "idx": 25,
             "type": "property",
             "color": "yellow",
             "cost": {
@@ -348,6 +374,7 @@
             }
         },
         "Emerald Hill": {
+            "idx": 26,
             "type": "property",
             "color": "yellow",
             "cost": {
@@ -366,6 +393,7 @@
             }
         },
         "Water Works": {
+            "idx": 27,
             "type": "infra",
             "color": "white",
             "cost": {
@@ -379,6 +407,7 @@
             }
         },
         "Raffles City": {
+            "idx": 28,
             "type": "property",
             "color": "yellow",
             "cost": {
@@ -397,9 +426,11 @@
             }
         },
         "Go To Jail": {
+            "idx": 29,
             "type": "event"
         },
         "Tanglin Road": {
+            "idx": 30,
             "type": "property",
             "color": "green",
             "cost": {
@@ -418,6 +449,7 @@
             }
         },
         "Orchard Road": {
+            "idx": 31,
             "type": "property",
             "color": "green",
             "cost": {
@@ -436,9 +468,11 @@
             }
         },
         "Community Chest 3": {
+            "idx": 32,
             "type": "event"
         },
         "Scott's Road": {
+            "idx": 33,
             "type": "property",
             "color": "green",
             "cost": {
@@ -457,6 +491,7 @@
             }
         },
         "Bedok Station": {
+            "idx": 34,
             "type": "property",
             "color": "black",
             "cost": {
@@ -472,9 +507,11 @@
             }
         },
         "Chance 3": {
+            "idx": 35,
             "type": "event"
         },
         "Nassim Road": {
+            "idx": 36,
             "type": "property",
             "color": "blue",
             "cost": {
@@ -492,9 +529,11 @@
             }
         },
         "Super Tax": {
+            "idx": 37,
             "type": "event"
         },
         "Queen Astrid Park": {
+            "idx": 38,
             "type": "property",
             "color": "blue",
             "cost": {
@@ -510,6 +549,10 @@
                 "house": 50,
                 "hotel": 250
             }
+        },
+        "GO": {
+            "idx": 39,
+            "type": "event"
         }
     }
 }
