@@ -1,17 +1,40 @@
-class Tile:
+import abc
+
+
+class Tile(metaclass=abc.ABCMeta):
+    def __init__(self):
+        raise NotImplementedError
+
+
+class TilePurchasable(Tile):
     """
-    Each tile on the board
+    Metaclass for properties, infra and utils
     """
+    @abc.abstractmethod
+    def liquidate(self):
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def acquire(self):
+        raise NotImplementedError
+
+    @abc.abstractmethod
+    def get_charges(self):
+        raise NotImplementedError
+
+
+class TileProperty(TilePurchasable):
     capacity = {
         'house': 4,
         'hotel': 1
     }
 
-    def __init__(self, **kwargs):
-        self.name = kwargs['name']
-        self.color = kwargs['color']
-        self.cost = kwargs['cost']
-        self.schedule_fee = kwargs['schedule']
+    def __init__(self, schema):
+        self.name = schema['name']
+        self.idx = schema['idx']
+        self.color = schema['color']
+        self.cost = schema['cost']
+        self.schedule_fee = schema['schedule']
 
         self.construct_count = {
             'house': 0,
@@ -65,3 +88,68 @@ class Tile:
         self.construct_count[contype] += 1
 
         return self.cost[contype]
+
+
+class TileInfra(TilePurchasable):
+    def __init__(self, schema):
+        self.name = schema['name']
+        self.idx = schema['idx']
+        self.color = schema['color']
+        self.cost = schema['cost']
+        self.schedule_fee = schema['schedule']
+        self._owner = None
+    
+    def liquidate(self):
+        """
+        Sell this tile. Returns the proceeds from the sale
+        """
+        self.owner = None
+        return self.cost['title']
+
+    def acquire(self, name: str):
+        """
+        Purchase this tile. Returns the cost of the title
+        """
+        self.owner = name
+        return self.cost['title']
+
+    def get_charges(self, n_tile: int):
+        """
+        Calculate the charges upon this visitor. n_tile is the number of same-
+        color tiles owned by the owner of this tile (to be supplied by the
+        Board class)
+        """
+        return self.schedule_fee['title'] * n_tile
+
+
+class TileEvent(Tile):
+    """
+    Chance, Community Chest, Taxes, Go To Jail, GO
+    """
+    def __init__(self, schema):
+        self.name = schema['name']
+
+
+class TileStatic(Tile):
+    """
+    Free Parking, Jail
+    """
+    def __init__(self, schema):
+        self.name = schema['name']
+
+
+class TileFactory:
+    """
+    Tile factory class
+    """
+    def create(schema: dict) -> Tile:
+        tiletype = schema['type']
+
+        if tiletype == 'property':
+            return TileProperty(schema)
+        elif tiletype == 'infra':
+            return TileInfra(schema)
+        elif tiletype == 'event':
+            return TileEvent(schema)
+        elif tiletype == 'static':
+            return TileStatic(schema)

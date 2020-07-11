@@ -1,6 +1,8 @@
 import player
 import tile
 
+from tile import TileFactory
+
 
 class Board:
     """
@@ -16,8 +18,7 @@ class Board:
         self.lst_tile = []
         for k, v in schema['board-sg'].items():
             v['name'] = k
-            self.lst_tile += [tile.Tile(v)]
-
+            self.lst_tile += [TileFactory.create(v)]
 
     def assign_turns(self):
         """
