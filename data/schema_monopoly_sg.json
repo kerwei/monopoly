@@ -340,7 +340,7 @@
         },
         "Jurong East Station": {
             "idx": 24,
-            "type": "property",
+            "type": "infra",
             "color": "black",
             "cost": {
                 "title": 2000
@@ -492,7 +492,7 @@
         },
         "Bedok Station": {
             "idx": 34,
-            "type": "property",
+            "type": "infra",
             "color": "black",
             "cost": {
                 "title": 2000
