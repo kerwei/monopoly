@@ -54,7 +54,9 @@ class TestCreateBoard(unittest2.TestCase):
         """
         Make sure that the schema is loaded properly
         """
+        self.new_board = board.Board(self.players, schema=self.schema)
+
         tile_names = [k for k in self.schema['board-sg']]
-        board_tiles = [t.name for t in self.new_board.tiles]
+        board_tiles = [t.name for t in self.new_board.lst_tile]
 
         self.assertItemsEqual(tile_names, board_tiles)
