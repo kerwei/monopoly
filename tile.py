@@ -29,7 +29,7 @@ class TileProperty(TilePurchasable):
         'hotel': 1
     }
 
-    def __init__(self, schema):
+    def __init__(self, schema: dict):
         self.name = schema['name']
         self.idx = schema['idx']
         self.color = schema['color']
@@ -42,21 +42,21 @@ class TileProperty(TilePurchasable):
         }
         self.owner = None
     
-    def liquidate(self):
+    def liquidate(self) -> int:
         """
         Sell this tile. Returns the proceeds from the sale
         """
         self.owner = None
         return self.cost['title']
 
-    def acquire(self, name: str):
+    def acquire(self, name: str) -> int:
         """
         Purchase this tile. Returns the cost of the title
         """
         self.owner = name
         return self.cost['title']
 
-    def get_charges(self, n_tile: int):
+    def get_charges(self, n_tile: int) -> int:
         """
         Calculate the charges upon this visitor. n_tile is the number of same-
         color tiles owned by the owner of this tile (to be supplied by the
@@ -72,7 +72,7 @@ class TileProperty(TilePurchasable):
 
         return tile_fee + construct_fee
 
-    def add_construct(self, contype: str, qty: int=1):
+    def add_construct(self, contype: str, qty: int=1) -> int:
         """
         Add house or hotel units to this tile. Returns the cost of construction
         or 0 if the capacity is full
@@ -91,7 +91,7 @@ class TileProperty(TilePurchasable):
 
 
 class TileInfra(TilePurchasable):
-    def __init__(self, schema):
+    def __init__(self, schema: dict):
         self.name = schema['name']
         self.idx = schema['idx']
         self.color = schema['color']
@@ -99,21 +99,21 @@ class TileInfra(TilePurchasable):
         self.schedule_fee = schema['schedule']
         self.owner = None
     
-    def liquidate(self):
+    def liquidate(self) -> int:
         """
         Sell this tile. Returns the proceeds from the sale
         """
         self.owner = None
         return self.cost['title']
 
-    def acquire(self, name: str):
+    def acquire(self, name: str) -> int:
         """
         Purchase this tile. Returns the cost of the title
         """
         self.owner = name
         return self.cost['title']
 
-    def get_charges(self, n_tile: int):
+    def get_charges(self, n_tile: int) -> int:
         """
         Calculate the charges upon this visitor. n_tile is the number of same-
         color tiles owned by the owner of this tile (to be supplied by the
@@ -126,7 +126,7 @@ class TileEvent(Tile):
     """
     Chance, Community Chest, Taxes, Go To Jail, GO
     """
-    def __init__(self, schema):
+    def __init__(self, schema: dict):
         self.name = schema['name']
 
 
@@ -134,7 +134,7 @@ class TileStatic(Tile):
     """
     Free Parking, Jail
     """
-    def __init__(self, schema):
+    def __init__(self, schema: dict):
         self.name = schema['name']
 
 
