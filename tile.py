@@ -5,6 +5,10 @@ class Tile(metaclass=abc.ABCMeta):
     def __init__(self):
         raise NotImplementedError
 
+    @abc.abstractmethod
+    def get_actions(self, token: str):
+        raise NotImplementedError
+
 
 class TilePurchasable(Tile):
     """
@@ -129,13 +133,19 @@ class TileEvent(Tile):
     def __init__(self, schema: dict):
         self.name = schema['name']
 
+    def get_actions(self, token: str):
+        raise NotImplementedError
+
 
 class TileStatic(Tile):
     """
-    Free Parking, Jail
+    Free Parking, Jail - Just Visiting
     """
     def __init__(self, schema: dict):
         self.name = schema['name']
+
+    def get_actions(self, token: str) -> None:
+        return None
 
 
 class TileFactory:
