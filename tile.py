@@ -40,7 +40,7 @@ class TileProperty(TilePurchasable):
             'house': 0,
             'hotel': 0
         }
-        self._owner = None
+        self.owner = None
     
     def liquidate(self):
         """
@@ -97,7 +97,7 @@ class TileInfra(TilePurchasable):
         self.color = schema['color']
         self.cost = schema['cost']
         self.schedule_fee = schema['schedule']
-        self._owner = None
+        self.owner = None
     
     def liquidate(self):
         """
