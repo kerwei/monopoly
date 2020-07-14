@@ -1,0 +1,79 @@
+{
+    "Advance to GO": {
+        "move": {
+            "idx": 39
+        }
+    },
+    "Advance to Collyer Quay": {
+        "move": {
+            "idx": 23
+        }
+    },
+    "Advance to Battery Road": {
+        "move": {
+            "idx": 10
+        }
+    },
+    "Advance to Nearest Utility": {
+        "move": {
+            "color": "white",
+            "multiple": {"dice": 10}
+        }
+    },
+    "Advance to Nearest Railroad": {
+        "move": {
+            "idx": 23,
+            "multiple": {"fee": 2}
+        }
+    },
+    "Dividend": {
+        "receive": {
+            "bank": 50
+        }
+    },
+    "Get Out Of Jail Free": {
+        "jail-free": true
+    },
+    "Go Back Three Spaces": {
+        "move": {
+            "steps": -3
+        }
+    },
+    "Go To Jail": {
+        "move": {
+            "idx": 9
+        },
+        "jail": true
+    },
+    "General Repair": {
+        "pay": {
+            "bank": "construct",
+            "multiple": {
+                "house": 25,
+                "hotel": 100
+            }
+        }
+    },
+    "Poor Tax": {
+        "pay": {"bank": 15}
+    },
+    "Take Trip to Ang Mo Kio Station": {
+        "move": {
+            "idx": 4
+        }
+    },
+    "Take a Walk to Queen Astrid Park": {
+        "move": {"idx": 39}
+    },
+    "Elected Chairman": {
+        "pay": {
+            "player": 50
+        }
+    },
+    "Building and Loan Matures": {
+        "receive": {"bank": 150}
+    },
+    "Won Crossword Competition": {
+        "receive": {"bank": 100}
+    }
+}
