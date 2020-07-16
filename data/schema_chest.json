@@ -1,0 +1,57 @@
+{
+    "Advance to GO": {
+        "move": {"idx": 39}
+    },
+    "Bank Error": {
+        "receive": {"bank": 200}
+    },
+    "Doctor's Fees": {
+        "pay": {"bank": 50}
+    },
+    "Get Out Of Jail Free": {
+        "jail-free": true
+    },
+    "Go To Jail": {
+        "move": {"idx": 9},
+        "jail": true
+    },
+    "Grand Opera Night": {
+        "receive": {"player": 50}
+    },
+    "Holiday Fund Matures": {
+        "receive": {"bank": 100}
+    },
+    "Income Tax Refund": {
+        "receive": {"bank": 20}
+    },
+    "It's Your Birthday": {
+        "receive": {"player": 10}
+    },
+    "Life Insurance Matures": {
+        "receive": {"bank": 100}
+    },
+    "Hospital Fees": {
+        "pay": {"bank": 50}
+    },
+    "School Fees": {
+        "pay": {"bank": 50}
+    },
+    "Receive Consultancy Fees": {
+        "receive": {"bank": 25}
+    },
+    "Street Repair": {
+        "pay": {
+            "bank": "construct",
+            "multiple": {
+                "house": 40,
+                "hotel": 115
+            }
+        }
+    },
+    "Second Prize in Beauty Contest": {
+        "receive": {"bank": 10}
+    },
+    "Inheritance": {
+        "receive": {"bank": 100}
+    }
+}
