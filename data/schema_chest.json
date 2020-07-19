@@ -1,45 +1,59 @@
 {
-    "Advance to GO": {
+    "0": {
+        "name": "Advance to GO",
         "move": {"idx": 39}
     },
-    "Bank Error": {
+    "1": {
+        "name": "Bank Error",
         "receive": {"bank": 200}
     },
-    "Doctor's Fees": {
+    "2": {
+        "name": "Doctor's Fees",
         "pay": {"bank": 50}
     },
-    "Get Out Of Jail Free": {
+    "3": {
+        "name": "Get Out Of Jail Free",
         "jail-free": true
     },
-    "Go To Jail": {
+    "4": {
+        "name": "Go To Jail",
         "move": {"idx": 9},
         "jail": true
     },
-    "Grand Opera Night": {
+    "5": {
+        "name": "Grand Opera Night",
         "receive": {"player": 50}
     },
-    "Holiday Fund Matures": {
+    "6": {
+        "name": "Holiday Fund Matures",
         "receive": {"bank": 100}
     },
-    "Income Tax Refund": {
+    "7": {
+        "name": "Income Tax Refund",
         "receive": {"bank": 20}
     },
-    "It's Your Birthday": {
+    "8": {
+        "name": "It's Your Birthday",
         "receive": {"player": 10}
     },
-    "Life Insurance Matures": {
+    "9": {
+        "name": "Life Insurance Matures",
         "receive": {"bank": 100}
     },
-    "Hospital Fees": {
+    "10": {
+        "name": "Hospital Fees",
         "pay": {"bank": 50}
     },
-    "School Fees": {
+    "11": {
+        "name": "School Fees",
         "pay": {"bank": 50}
     },
-    "Receive Consultancy Fees": {
+    "12": {
+        "name": "Receive Consultancy Fees",
         "receive": {"bank": 25}
     },
-    "Street Repair": {
+    "13": {
+        "name": "Street Repair",
         "pay": {
             "bank": "construct",
             "multiple": {
@@ -48,10 +62,12 @@
             }
         }
     },
-    "Second Prize in Beauty Contest": {
+    "14": {
+        "name": "Second Prize in Beauty Contest",
         "receive": {"bank": 10}
     },
-    "Inheritance": {
+    "15": {
+        "name": "Inheritance",
         "receive": {"bank": 100}
     }
 }

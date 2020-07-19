@@ -1,51 +1,61 @@
 {
-    "Advance to GO": {
+    "0": {
+        "name": "Advance to GO",
         "move": {
             "idx": 39
         }
     },
-    "Advance to Collyer Quay": {
+    "1": {
+        "name": "Advance to Collyer Quay",
         "move": {
             "idx": 23
         }
     },
-    "Advance to Battery Road": {
+    "2": {
+        "name": "Advance to Battery Road",
         "move": {
             "idx": 10
         }
     },
-    "Advance to Nearest Utility": {
+    "3": {
+        "name": "Advance to Nearest Utility",
         "move": {
             "color": "white",
             "multiple": {"dice": 10}
         }
     },
-    "Advance to Nearest Railroad": {
+    "4": {
+        "name": "Advance to Nearest Railroad",
         "move": {
             "idx": 23,
             "multiple": {"fee": 2}
         }
     },
-    "Dividend": {
+    "5": {
+        "name": "Dividend",
         "receive": {
             "bank": 50
         }
     },
-    "Get Out Of Jail Free": {
+    "6": {
+        "name": "Get Out Of Jail Free",
         "jail-free": true
     },
-    "Go Back Three Spaces": {
+    "7": {
+        "name": "Go Back Three Spaces",
         "move": {
             "steps": -3
         }
     },
-    "Go To Jail": {
+    "8": {
+        "name": "Go To Jail",
         "move": {
             "idx": 9
         },
         "jail": true
     },
-    "General Repair": {
+    "9": {
+        "name": "General Repair",
         "pay": {
             "bank": "construct",
             "multiple": {
@@ -54,26 +64,32 @@
             }
         }
     },
-    "Poor Tax": {
+    "10": {
+        "name": "Poor Tax",
         "pay": {"bank": 15}
     },
-    "Take Trip to Ang Mo Kio Station": {
+    "11": {
+        "name": "Take Trip to Ang Mo Kio Station",
         "move": {
             "idx": 4
         }
     },
-    "Take a Walk to Queen Astrid Park": {
+    "12": {
+        "name": "Take a Walk to Queen Astrid Park",
         "move": {"idx": 39}
     },
-    "Elected Chairman": {
+    "13": {
+        "name": "Elected Chairman",
         "pay": {
             "player": 50
         }
     },
-    "Building and Loan Matures": {
+    "14": {
+        "name": "Building and Loan Matures",
         "receive": {"bank": 150}
     },
-    "Won Crossword Competition": {
+    "15": {
+        "name": "Won Crossword Competition",
         "receive": {"bank": 100}
     }
 }
