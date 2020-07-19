@@ -1,4 +1,10 @@
 import abc
+import json
+import os
+import random
+
+from .common import DATADIR
+from .player import Player
 
 
 class Tile(metaclass=abc.ABCMeta):
@@ -126,8 +132,47 @@ class TileEvent(Tile):
     """
     Chance, Community Chest, Taxes, Go To Jail, GO
     """
-    def __init__(self, schema: dict):
-        self.name = schema['name']
+    def __init__(self):
+        self._load_schema()
+
+        # Load the cards into a deck
+        self.deck = [card_idx for card_idx in self.schema]
+        self._shuffle_deck()
+
+    def _load_schema(self) -> None:
+        """
+        Load schema from json file
+        """
+        with open(self.fpath, 'r') as f:
+            self.schema = json.load(f)
+
+    def _shuffle_deck(self) -> None:
+        """
+        Shuffle the order of the cards in the deck
+        """
+        random.shuffle(self.deck)
+
+    def draw_one(self):
+        """
+        Draw a card from the deck for the given player
+        """
+        drawn = self.deck.pop(0)
+        # Move to the bottom of the deck
+        self.deck.append(drawn)
+
+        return self.schema[drawn]
+
+
+class TileChance(TileEvent):
+    def __init__(self):
+        self.fpath = os.path.join(DATADIR, 'schema_chance.json')
+        super.__init__()
+
+
+class TileCommunityChest(TileEvent):
+    def __init__(self):
+        self.fpath = os.path.join(DATADIR, 'schema_chest.json')
+        super.__init__()
 
 
 class TileStatic(Tile):
