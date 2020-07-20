@@ -46,7 +46,8 @@
         "3": {
             "name": "Income Tax",
             "idx": 3,
-            "type": "event"
+            "type": "event",
+            "pay": [{"bank": 0.10}, {"bank": 2000}]
         },
         "4": {
             "name": "Ang Mo Kio Station",
@@ -457,7 +458,8 @@
         "29": {
             "name": "Go To Jail",
             "idx": 29,
-            "type": "event"
+            "type": "event",
+            "move": {"idx": 9}
         },
         "30": {
             "name": "Tanglin Road",
@@ -568,7 +570,8 @@
         "37": {
             "name": "Super Tax",
             "idx": 37,
-            "type": "event"
+            "type": "event",
+            "pay": {"bank": 750}
         },
         "38": {
             "name": "Queen Astrid Park",
@@ -592,7 +595,8 @@
         "39": {
             "name": "GO",
             "idx": 39,
-            "type": "event"
+            "type": "event",
+            "receive": {"bank": 2000}
         }
     }
 }
