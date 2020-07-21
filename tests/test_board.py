@@ -6,9 +6,7 @@ import board
 import player
 import tile
 
-
-ROOTDIR = os.path.dirname(os.path.dirname(__file__))
-DATADIR = os.path.join(ROOTDIR, 'data')
+from common import ROOTDIR, DATADIR
 
 
 class TestCreateBoard(unittest2.TestCase):
@@ -56,7 +54,7 @@ class TestCreateBoard(unittest2.TestCase):
         """
         self.new_board = board.Board(self.players, schema=self.schema)
 
-        tile_names = [k for k in self.schema['board-sg']]
+        tile_names = [k['name'] for k in self.schema['board-sg'].values()]
         board_tiles = [t.name for t in self.new_board.lst_tile]
 
         self.assertItemsEqual(tile_names, board_tiles)

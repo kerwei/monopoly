@@ -20,7 +20,7 @@
             }
         },
         "1": {
-            "name": "Community Chest 1",
+            "name": "Community Chest",
             "idx": 1,
             "type": "event"
         },
@@ -87,7 +87,7 @@
             }
         },
         "6": {
-            "name": "Chance 1",
+            "name": "Chance",
             "idx": 6,
             "type": "event"
         },
@@ -249,7 +249,7 @@
             }
         },
         "16": {
-            "name": "Community Chest 2",
+            "name": "Community Chest",
             "idx": 16,
             "type": "event"
         },
@@ -319,7 +319,7 @@
             }
         },
         "21": {
-            "name": "Chance 2",
+            "name": "Chance",
             "idx": 21,
             "type": "event"
         },
@@ -502,7 +502,7 @@
             }
         },
         "32": {
-            "name": "Community Chest 3",
+            "name": "Community Chest",
             "idx": 32,
             "type": "event"
         },
@@ -544,7 +544,7 @@
             }
         },
         "35": {
-            "name": "Chance 3",
+            "name": "Chance",
             "idx": 35,
             "type": "event"
         },
