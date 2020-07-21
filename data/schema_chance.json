@@ -1,0 +1,95 @@
+{
+    "0": {
+        "name": "Advance to GO",
+        "move": {
+            "idx": 39
+        }
+    },
+    "1": {
+        "name": "Advance to Collyer Quay",
+        "move": {
+            "idx": 23
+        }
+    },
+    "2": {
+        "name": "Advance to Battery Road",
+        "move": {
+            "idx": 10
+        }
+    },
+    "3": {
+        "name": "Advance to Nearest Utility",
+        "move": {
+            "color": "white",
+            "multiple": {"dice": 10}
+        }
+    },
+    "4": {
+        "name": "Advance to Nearest Railroad",
+        "move": {
+            "idx": 23,
+            "multiple": {"fee": 2}
+        }
+    },
+    "5": {
+        "name": "Dividend",
+        "receive": {
+            "bank": 50
+        }
+    },
+    "6": {
+        "name": "Get Out Of Jail Free",
+        "jail-free": true
+    },
+    "7": {
+        "name": "Go Back Three Spaces",
+        "move": {
+            "steps": -3
+        }
+    },
+    "8": {
+        "name": "Go To Jail",
+        "move": {
+            "idx": 9
+        },
+        "jail": true
+    },
+    "9": {
+        "name": "General Repair",
+        "pay": {
+            "bank": "construct",
+            "multiple": {
+                "house": 25,
+                "hotel": 100
+            }
+        }
+    },
+    "10": {
+        "name": "Poor Tax",
+        "pay": {"bank": 15}
+    },
+    "11": {
+        "name": "Take Trip to Ang Mo Kio Station",
+        "move": {
+            "idx": 4
+        }
+    },
+    "12": {
+        "name": "Take a Walk to Queen Astrid Park",
+        "move": {"idx": 39}
+    },
+    "13": {
+        "name": "Elected Chairman",
+        "pay": {
+            "player": 50
+        }
+    },
+    "14": {
+        "name": "Building and Loan Matures",
+        "receive": {"bank": 150}
+    },
+    "15": {
+        "name": "Won Crossword Competition",
+        "receive": {"bank": 100}
+    }
+}

@@ -1,4 +1,9 @@
 import abc
+import json
+import os
+import random
+
+from common import DATADIR
 
 
 class Tile(metaclass=abc.ABCMeta):
@@ -126,12 +131,124 @@ class TileInfra(TilePurchasable):
         return self.schedule_fee['title'] * n_tile
 
 
-class TileEvent(Tile):
+class TileEvent:
+    def __init__(self, schema: dict):
+        self.name = schema['name']
+        self.idx = schema['idx']
+
+    @abc.abstractmethod
+    def get_action(self):
+        raise NotImplementedError
+
+
+class TileIncomeTax(TileEvent):
+    def __init__(self, schema: dict):
+        super().__init__(schema)
+        self.action = schema['pay']
+
+    def get_action(self):
+        """
+        Pay to bank the specified amount
+        """
+        return {'pay': self.action}
+
+
+class TileSuperTax(TileEvent):
+    def __init__(self, schema: dict):
+        super().__init__(schema)
+        self.action = schema['pay']
+
+    def get_action(self):
+        """
+        Pay to bank the specified amount
+        """
+        return {'pay': self.action}
+
+
+class TileGO(TileEvent):
+    def __init__(self, schema: dict):
+        super().__init__(schema)
+        self.action = schema['receive']
+
+    def get_action(self):
+        """
+        Pay to bank the specified amount
+        """
+        return {'receive': self.action}
+
+
+class TileGoToJail(TileEvent):
+    def __init__(self, schema: dict):
+        super().__init__(schema)
+        self.action = schema['move']
+
+    def get_action(self):
+        """
+        Pay to bank the specified amount
+        """
+        return {'move': self.action}
+
+
+class TileEventDeck(Tile):
     """
     Chance, Community Chest, Taxes, Go To Jail, GO
     """
-    def __init__(self, schema: dict):
-        self.name = schema['name']
+    def __init__(self):
+        self._load_schema()
+
+        # Load the cards into a deck
+        self.deck = [card_idx for card_idx in self.schema]
+        self._shuffle_deck()
+
+    def _load_schema(self) -> None:
+        """
+        Load schema from json file
+        """
+        with open(self.fpath, 'r') as f:
+            self.schema = json.load(f)
+
+    def _shuffle_deck(self) -> None:
+        """
+        Shuffle the order of the cards in the deck
+        """
+        random.shuffle(self.deck)
+
+    def get_action(self):
+        """
+        Draw a card from the deck for the given player
+        """
+        drawn = self.deck.pop(0)
+        # Move to the bottom of the deck
+        self.deck.append(drawn)
+
+        return self.schema[drawn]
+
+
+class TileChance(TileEventDeck):
+    def __init__(self):
+        self.name = 'Chance'
+        self.fpath = os.path.join(DATADIR, 'schema_chance.json')
+        super().__init__()
+
+
+class TileCommunityChest(TileEventDeck):
+    def __init__(self):
+        self.name = 'Community Chest'
+        self.fpath = os.path.join(DATADIR, 'schema_chest.json')
+        super().__init__()
+
+
+class EventFactory:
+    @staticmethod
+    def create(schema: dict) -> TileEvent:
+        if schema['name'] == 'Income Tax':
+            return TileIncomeTax(schema)
+        elif schema['name'] == 'Go To Jail':
+            return TileGoToJail(schema)
+        elif schema['name'] == 'Super Tax':
+            return TileSuperTax(schema)
+        elif schema['name'] == 'GO':
+            return TileGO(schema)
 
     def get_actions(self, token: str):
         raise NotImplementedError
@@ -160,6 +277,6 @@ class TileFactory:
         elif tiletype == 'infra':
             return TileInfra(schema)
         elif tiletype == 'event':
-            return TileEvent(schema)
+            return EventFactory.create(schema)
         elif tiletype == 'static':
             return TileStatic(schema)
