@@ -16,16 +16,8 @@ class TestCreateBoard(unittest2.TestCase):
             os.path.join(DATADIR, 'schema_monopoly_sg.json'), 'r'
         ) as f:
             self.schema = json.load(f)
-
-        self.players = ['apple','boot','car','dog']
-        self.roster = {
-            'apple': None,
-            'boot': None,
-            'car': None,
-            'dog': None
-        }
-        for p in self.players:
-            self.roster[p] = player.Player(p)
+        self.lst_token = ['apple','boot','car','dog']
+        self.players = [player.Player(p) for p in self.lst_token] 
 
     def tearDown(self) -> None:
         pass
@@ -34,17 +26,17 @@ class TestCreateBoard(unittest2.TestCase):
         """
         Make sure that the board can be created
         """
-        self.new_board = board.Board(self.players, schema=self.schema)
+        self.new_board = board.Board(self.lst_token, schema=self.schema)
         self.assertIsInstance(self.new_board, board.Board)
 
     def testHasAllPlayers(self):
         """
         Make sure that all players are included
         """
-        self.new_board = board.Board(self.players, schema=self.schema)
+        self.new_board = board.Board(self.lst_token, schema=self.schema)
 
-        all_players = [p.token for p in self.roster.values()]
-        board_players = [p.token for p in self.new_board.roster.values()]
+        all_players = [p.token for p in self.players]
+        board_players = [p.token for p in self.new_board.players]
 
         self.assertItemsEqual(all_players, board_players)
 
@@ -52,7 +44,7 @@ class TestCreateBoard(unittest2.TestCase):
         """
         Make sure that the schema is loaded properly
         """
-        self.new_board = board.Board(self.players, schema=self.schema)
+        self.new_board = board.Board(self.lst_token, schema=self.schema)
 
         tile_names = [k['name'] for k in self.schema['board-sg'].values()]
         board_tiles = [t.name for t in self.new_board.lst_tile]

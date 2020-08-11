@@ -1,4 +1,5 @@
 import player
+import random
 import tile
 
 from tile import TileFactory
@@ -11,9 +12,8 @@ class Board:
     def __init__(self, lst_player: list, schema: dict):
         # For now players are added based on list sequence. A method will be
         # added to determine the turn of each player later
-        self.roster = {
-            i: player.Player(token) for i, token in enumerate(lst_player)
-        }
+        self.players = [player.Player(p) for p in lst_player]
+        self.assign_turns_by_shuffling()
 
         self.lst_tile = []
         self.community_chest = tile.TileCommunityChest()
@@ -27,11 +27,11 @@ class Board:
             else:
                 self.lst_tile += [TileFactory.create(v)]
 
-    def assign_turns(self):
+    def assign_turns_by_shuffling(self):
         """
         Assign the turn for each player
         """
-        raise NotImplementedError
+        random.shuffle(self.players)
 
     def build(self):
         """
