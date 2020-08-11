@@ -11,7 +11,7 @@ class Tile(metaclass=abc.ABCMeta):
         raise NotImplementedError
 
     @abc.abstractmethod
-    def get_actions(self, token: str):
+    def get_action(self, token: str):
         raise NotImplementedError
 
 
@@ -29,6 +29,9 @@ class TilePurchasable(Tile):
 
     @abc.abstractmethod
     def get_charges(self):
+        raise NotImplementedError
+
+    def get_action(self):
         raise NotImplementedError
 
 
@@ -131,14 +134,10 @@ class TileInfra(TilePurchasable):
         return self.schedule_fee['title'] * n_tile
 
 
-class TileEvent:
+class TileEvent(Tile):
     def __init__(self, schema: dict):
         self.name = schema['name']
         self.idx = schema['idx']
-
-    @abc.abstractmethod
-    def get_action(self):
-        raise NotImplementedError
 
 
 class TileIncomeTax(TileEvent):
@@ -189,7 +188,7 @@ class TileGoToJail(TileEvent):
         return {'move': self.action}
 
 
-class TileEventDeck(Tile):
+class TileEventDeck(TileEvent):
     """
     Chance, Community Chest, Taxes, Go To Jail, GO
     """
@@ -261,7 +260,7 @@ class TileStatic(Tile):
     def __init__(self, schema: dict):
         self.name = schema['name']
 
-    def get_actions(self, token: str) -> None:
+    def get_action(self, token: str) -> None:
         return None
 
 
