@@ -19,13 +19,8 @@ class Board:
         self.community_chest = tile.TileCommunityChest()
         self.chance = tile.TileChance()
 
-        for v in schema['board-sg'].values():
-            if 'chance' in v['name'].lower():
-                self.lst_tile += [self.chance]
-            elif 'community' in v['name'].lower():
-                self.lst_tile += [self.community_chest]
-            else:
-                self.lst_tile += [TileFactory.create(v)]
+        # Build the board
+        self.build(schema)
 
     def assign_turns_by_shuffling(self):
         """
@@ -33,8 +28,14 @@ class Board:
         """
         random.shuffle(self.players)
 
-    def build(self):
+    def build(self, schema: dict) -> None:
         """
         Constructs the full board
         """
-        raise NotImplementedError
+        for v in schema['board-sg'].values():
+            if 'chance' in v['name'].lower():
+                self.lst_tile += [self._chance]
+            elif 'community' in v['name'].lower():
+                self.lst_tile += [self._community_chest]
+            else:
+                self.lst_tile += [TileFactory.create(v)]
