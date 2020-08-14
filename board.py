@@ -5,6 +5,14 @@ import tile
 from tile import TileFactory
 
 
+class ItemCycler:
+    def __init__(self, lst_items: list):
+        self.roll = cycle(lst_items)
+
+    def issue_next(self) -> "list_element":
+        return next(self.roll)
+
+
 class Dice:
     def __init__(self, dice_type: str='hexa', n: int=2) -> tuple:
         """
