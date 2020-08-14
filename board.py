@@ -43,13 +43,19 @@ class Board:
         # added to determine the turn of each player later
         self.players = [player.Player(p) for p in lst_player]
         self.assign_turns_by_shuffling()
+        self.player_roll = ItemCycler(self.players)
 
         self.lst_tile = []
+        self.player_location = {p.token: 0 for p in self.players}
+
+        # Community Chest and Chance decks should be initialized only once
+        # since cards are drawn from the same instance
         self.community_chest = tile.TileCommunityChest()
         self.chance = tile.TileChance()
 
         # Build the board
         self.build(schema)
+        self.dice = Dice(dice_type='hexa', n=2)
 
     def assign_turns_by_shuffling(self):
         """
