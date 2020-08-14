@@ -1,8 +1,8 @@
 {
     "board-sg": {
-        "0": {
+        "1": {
             "name": "Geylang Road",
-            "idx": 0,
+            "idx": 1,
             "type": "property",
             "color": "purple",
             "cost": {
@@ -18,15 +18,15 @@
                 "house": 50,
                 "hotel": 250
             }
-        },
-        "1": {
-            "name": "Community Chest",
-            "idx": 1,
-            "type": "event"
         },
         "2": {
-            "name": "Serangoon Road",
+            "name": "Community Chest",
             "idx": 2,
+            "type": "event"
+        },
+        "3": {
+            "name": "Serangoon Road",
+            "idx": 3,
             "type": "property",
             "color": "purple",
             "cost": {
@@ -43,15 +43,15 @@
                 "hotel": 250
             }
         },
-        "3": {
+        "4": {
             "name": "Income Tax",
-            "idx": 3,
+            "idx": 4,
             "type": "event",
             "pay": [{"bank": 0.10}, {"bank": 2000}]
         },
-        "4": {
+        "5": {
             "name": "Ang Mo Kio Station",
-            "idx": 4,
+            "idx": 5,
             "type": "infra",
             "color": "black",
             "cost": {
@@ -66,9 +66,9 @@
                 }
             }
         },
-        "5": {
+        "6": {
             "name": "Farrer Road",
-            "idx": 5,
+            "idx": 6,
             "type": "property",
             "color": "grey",
             "cost": {
@@ -85,15 +85,15 @@
                 "house": 50,
                 "hotel": 250
             }
-        },
-        "6": {
-            "name": "Chance",
-            "idx": 6,
-            "type": "event"
         },
         "7": {
-            "name": "Braddell Road",
+            "name": "Chance",
             "idx": 7,
+            "type": "event"
+        },
+        "8": {
+            "name": "Braddell Road",
+            "idx": 8,
             "type": "property",
             "color": "grey",
             "cost": {
@@ -111,9 +111,9 @@
                 "hotel": 250
             }
         },
-        "8": {
+        "9": {
             "name": "Thomson Road",
-            "idx": 8,
+            "idx": 9,
             "type": "property",
             "color": "grey",
             "cost": {
@@ -131,14 +131,14 @@
                 "hotel": 250
             }
         },
-        "9": {
+        "10": {
             "name": "Jail",
-            "idx": 9,
+            "idx": 10,
             "type": "static"
         },
-        "10": {
+        "11": {
             "name": "Battery Road",
-            "idx": 10,
+            "idx": 11,
             "type": "property",
             "color": "pink",
             "cost": {
@@ -156,9 +156,9 @@
                 "hotel": 250
             }
         },
-        "11": {
+        "12": {
             "name": "Electric Company",
-            "idx": 11,
+            "idx": 12,
             "type": "infra",
             "color": "white",
             "cost": {
@@ -171,9 +171,9 @@
                 }
             }
         },
-        "12": {
+        "13": {
             "name": "Empress Place",
-            "idx": 12,
+            "idx": 13,
             "type": "property",
             "color": "pink",
             "cost": {
@@ -191,9 +191,9 @@
                 "hotel": 250
             }
         },
-        "13": {
+        "14": {
             "name": "Connaught Drive",
-            "idx": 13,
+            "idx": 14,
             "type": "property",
             "color": "pink",
             "cost": {
@@ -211,9 +211,9 @@
                 "hotel": 250
             }
         },
-        "14": {
+        "15": {
             "name": "City Hall Station",
-            "idx": 14,
+            "idx": 15,
             "type": "infra",
             "color": "black",
             "cost": {
@@ -228,9 +228,9 @@
                 }
             }
         },
-        "15": {
+        "16": {
             "name": "Colombo Court",
-            "idx": 15,
+            "idx": 16,
             "type": "property",
             "color": "orange",
             "cost": {
@@ -247,15 +247,15 @@
                 "house": 50,
                 "hotel": 250
             }
-        },
-        "16": {
-            "name": "Community Chest",
-            "idx": 16,
-            "type": "event"
         },
         "17": {
-            "name": "Havelock Road",
+            "name": "Community Chest",
             "idx": 17,
+            "type": "event"
+        },
+        "18": {
+            "name": "Havelock Road",
+            "idx": 18,
             "type": "property",
             "color": "orange",
             "cost": {
@@ -273,9 +273,9 @@
                 "hotel": 250
             }
         },
-        "18": {
+        "19": {
             "name": "St. Andrew's Road",
-            "idx": 18,
+            "idx": 19,
             "type": "property",
             "color": "orange",
             "cost": {
@@ -293,14 +293,14 @@
                 "hotel": 250
             }
         },
-        "19": {
+        "20": {
             "name": "Free Parking",
-            "idx": 19,
+            "idx": 20,
             "type": "static"
         },
-        "20": {
+        "21": {
             "name": "Robinson Road",
-            "idx": 20,
+            "idx": 21,
             "type": "property",
             "color": "red",
             "cost": {
@@ -317,15 +317,15 @@
                 "house": 50,
                 "hotel": 250
             }
-        },
-        "21": {
-            "name": "Chance",
-            "idx": 21,
-            "type": "event"
         },
         "22": {
-            "name": "Shenton Way",
+            "name": "Chance",
             "idx": 22,
+            "type": "event"
+        },
+        "23": {
+            "name": "Shenton Way",
+            "idx": 23,
             "type": "property",
             "color": "red",
             "cost": {
@@ -343,9 +343,9 @@
                 "hotel": 250
             }
         },
-        "23": {
+        "24": {
             "name": "Collyer Quay",
-            "idx": 23,
+            "idx": 24,
             "type": "property",
             "color": "red",
             "cost": {
@@ -363,9 +363,9 @@
                 "hotel": 250
             }
         },
-        "24": {
+        "25": {
             "name": "Jurong East Station",
-            "idx": 24,
+            "idx": 25,
             "type": "infra",
             "color": "black",
             "cost": {
@@ -380,28 +380,8 @@
                 }
             }
         },
-        "25": {
-            "name": "Marina Square",
-            "idx": 25,
-            "type": "property",
-            "color": "yellow",
-            "cost": {
-                "title": 2600,
-                "house": 100,
-                "hotel": 500
-            },
-            "schedule": {
-                "title": {
-                    "1": 100,
-                    "2": 150,
-                    "3": 300
-                },
-                "house": 50,
-                "hotel": 250
-            }
-        },
         "26": {
-            "name": "Emerald Hill",
+            "name": "Marina Square",
             "idx": 26,
             "type": "property",
             "color": "yellow",
@@ -421,8 +401,28 @@
             }
         },
         "27": {
-            "name": "Water Works",
+            "name": "Emerald Hill",
             "idx": 27,
+            "type": "property",
+            "color": "yellow",
+            "cost": {
+                "title": 2600,
+                "house": 100,
+                "hotel": 500
+            },
+            "schedule": {
+                "title": {
+                    "1": 100,
+                    "2": 150,
+                    "3": 300
+                },
+                "house": 50,
+                "hotel": 250
+            }
+        },
+        "28": {
+            "name": "Water Works",
+            "idx": 28,
             "type": "infra",
             "color": "white",
             "cost": {
@@ -435,9 +435,9 @@
                 }
             }
         },
-        "28": {
+        "29": {
             "name": "Raffles City",
-            "idx": 28,
+            "idx": 29,
             "type": "property",
             "color": "yellow",
             "cost": {
@@ -455,31 +455,11 @@
                 "hotel": 250
             }
         },
-        "29": {
+        "30": {
             "name": "Go To Jail",
-            "idx": 29,
+            "idx": 30,
             "type": "event",
             "move": {"idx": 9}
-        },
-        "30": {
-            "name": "Tanglin Road",
-            "idx": 30,
-            "type": "property",
-            "color": "green",
-            "cost": {
-                "title": 3000,
-                "house": 100,
-                "hotel": 500
-            },
-            "schedule": {
-                "title": {
-                    "1": 100,
-                    "2": 150,
-                    "3": 300
-                },
-                "house": 50,
-                "hotel": 250
-            }
         },
         "31": {
             "name": "Tanglin Road",
@@ -502,13 +482,33 @@
             }
         },
         "32": {
-            "name": "Community Chest",
+            "name": "Tanglin Road",
             "idx": 32,
-            "type": "event"
+            "type": "property",
+            "color": "green",
+            "cost": {
+                "title": 3000,
+                "house": 100,
+                "hotel": 500
+            },
+            "schedule": {
+                "title": {
+                    "1": 100,
+                    "2": 150,
+                    "3": 300
+                },
+                "house": 50,
+                "hotel": 250
+            }
         },
         "33": {
-            "name": "Scott's Road",
+            "name": "Community Chest",
             "idx": 33,
+            "type": "event"
+        },
+        "34": {
+            "name": "Scott's Road",
+            "idx": 34,
             "type": "property",
             "color": "green",
             "cost": {
@@ -526,9 +526,9 @@
                 "hotel": 250
             }
         },
-        "34": {
+        "35": {
             "name": "Bedok Station",
-            "idx": 34,
+            "idx": 35,
             "type": "infra",
             "color": "black",
             "cost": {
@@ -543,14 +543,14 @@
                 }
             }
         },
-        "35": {
+        "36": {
             "name": "Chance",
-            "idx": 35,
+            "idx": 36,
             "type": "event"
         },
-        "36": {
+        "37": {
             "name": "Nassim Road",
-            "idx": 36,
+            "idx": 37,
             "type": "property",
             "color": "blue",
             "cost": {
@@ -567,15 +567,15 @@
                 "hotel": 250
             }
         },
-        "37": {
+        "38": {
             "name": "Super Tax",
-            "idx": 37,
+            "idx": 38,
             "type": "event",
             "pay": {"bank": 750}
         },
-        "38": {
+        "39": {
             "name": "Queen Astrid Park",
-            "idx": 38,
+            "idx": 39,
             "type": "property",
             "color": "blue",
             "cost": {
@@ -592,9 +592,9 @@
                 "hotel": 250
             }
         },
-        "39": {
+        "0": {
             "name": "GO",
-            "idx": 39,
+            "idx": 0,
             "type": "event",
             "receive": {"bank": 2000}
         }
