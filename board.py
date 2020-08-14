@@ -74,3 +74,37 @@ class Board:
                 self.lst_tile += [self._community_chest]
             else:
                 self.lst_tile += [TileFactory.create(v)]
+
+    def move_to_index(self, player: player.Player, n: int):
+        self.player_location[player.token] = n
+
+    def move_by_steps(self, player: player.Player, n: int):
+        self.player_location[player.token] = \
+            (self.player_location[player.token] + n) % 40
+
+    def play_next_turn(self) -> None:
+        """
+        Play out the turn of the next player in queue
+        """
+        this_player = self.player_roll.issue_next()
+
+    def roll_till_move(self, player: player.Player):
+        """
+        Determine how the dice roll is interpreted i.e. if it's a pair, then
+        the player gets a reroll and if 3 pairs get rolled in a row, go to jail
+        """
+        roll_one, roll_two = self.dice.roll()
+        i = 1
+        steps = sum([roll_one, roll_two])
+
+        while all([roll_one == roll_two, i < 3]):
+            roll_one, roll_two = self.dice.roll()
+            steps += sum([roll_one, roll_two])
+            i += 1
+
+        if i == 3:
+            player.jail = True
+            self.move_to_index(player, 10)
+            return
+
+        self.move_by_steps(player steps)

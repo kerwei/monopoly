@@ -15,6 +15,8 @@ class Player:
         self.assets = defaultdict(list)
         # List of favor cards owned
         self.favors = defaultdict(int)
+        # Jail status
+        self.jail = False
 
     def pay(self, amount: int) -> None:
         """
