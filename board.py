@@ -5,6 +5,27 @@ import tile
 from tile import TileFactory
 
 
+class Dice:
+    def __init__(self, dice_type: str='hexa', n: int=2) -> tuple:
+        """
+        Default to 2 dice
+        """
+        self.dice_count = n
+
+        if dice_type == 'quad':
+            self.face = range(1,5)
+        elif dice_type == 'hexa':
+            self.face = range(1,7)
+        elif dice_type == 'octa':
+            self.face = range(1,9)
+
+    def roll(self):
+        """
+        Returns the outcome of one roll
+        """
+        return random.choices(self.face, k=self.dice_count)
+
+
 class Board:
     """
     The main board game class
