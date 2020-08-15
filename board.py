@@ -48,6 +48,7 @@ class Board:
 
         self.lst_tile = []
         self.player_location = {p.token: 0 for p in self.players}
+        self.player_nround = {p.token: 1 for p in self.players}
 
         # Community Chest and Chance decks should be initialized only once
         # since cards are drawn from the same instance
@@ -76,10 +77,24 @@ class Board:
             else:
                 self.lst_tile += [TileFactory.create(v)]
 
-    def move_to_index(self, player: player.Player, n: int):
+    def move_to_index(self, player: player.Player, n: int, pastgo: bool=True):
+        """
+        Move the player token by the index number. Add 1 to round count if
+        moving past the GO tile
+        """
+        if pastgo and self.player_location[player.token] > n:
+            self.player_nround[player.token] += 1
+
         self.player_location[player.token] = n
 
     def move_by_steps(self, player: player.Player, n: int):
+        """
+        Move the player token by the number of steps. Add 1 to round count if
+        moving past the GO tile
+        """
+        if (self.player_location[player.token] + n) // 40 > 0:
+            self.player_nround[player.token] += 1
+
         self.player_location[player.token] = \
             (self.player_location[player.token] + n) % 40
 
