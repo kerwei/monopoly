@@ -107,4 +107,4 @@ class Board:
             self.move_to_index(player, 10)
             return
 
-        self.move_by_steps(player steps)
+        self.move_by_steps(player, steps)
