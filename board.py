@@ -2,6 +2,7 @@ import player
 import random
 import tile
 
+from itertools import cycle
 from tile import TileFactory
 
 
@@ -50,8 +51,8 @@ class Board:
 
         # Community Chest and Chance decks should be initialized only once
         # since cards are drawn from the same instance
-        self.community_chest = tile.TileCommunityChest()
-        self.chance = tile.TileChance()
+        self._community_chest = tile.TileCommunityChest()
+        self._chance = tile.TileChance()
 
         # Build the board
         self.build(schema)
