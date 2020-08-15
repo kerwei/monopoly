@@ -68,3 +68,49 @@ class TestCreateBoard(unittest2.TestCase):
 
         # A double six-sided die roll cannot be less than 2
         self.assertEqual(min(scorecard.keys()), 2)
+
+    def testMoveToIndex(self):
+        """
+        It is possible to change the location of a player
+        by specifying the index or the number of steps
+        """
+        self.new_board = board.Board(self.lst_token, schema=self.schema)
+
+        # Get the identity of the first player
+        first = self.new_board.player_roll.issue_next()
+
+        # At the start, all players are located on the GO tile
+        self.assertEqual(
+            self.new_board.player_location[first.token],
+            0
+        )
+
+        # Move the player to Jail
+        self.new_board.move_to_index(first, 10)
+        self.assertEqual(
+            self.new_board.player_location[first.token],
+            10
+        )
+
+    def testMoveBySteps(self):
+        """
+        It is possible to change the location of a player
+        by specifying the index or the number of steps
+        """
+        self.new_board = board.Board(self.lst_token, schema=self.schema)
+
+        # Get the identity of the first player
+        first = self.new_board.player_roll.issue_next()
+
+        # At the start, all players are located on the GO tile
+        self.assertEqual(
+            self.new_board.player_location[first.token],
+            0
+        )
+
+        # Move the player to Jail
+        self.new_board.move_by_steps(first, 6)
+        self.assertEqual(
+            self.new_board.player_location[first.token],
+            6
+        )
