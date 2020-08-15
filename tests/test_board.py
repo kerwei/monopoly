@@ -17,7 +17,10 @@ class TestCreateBoard(unittest2.TestCase):
         ) as f:
             self.schema = json.load(f)
         self.lst_token = ['apple','boot','car','dog']
-        self.players = [player.Player(p) for p in self.lst_token] 
+        self.players = [player.Player(p) for p in self.lst_token]
+
+        # # Use double six-sided dice
+        self.dice = board.Dice(dice_type='hexa', n=2)
 
     def tearDown(self) -> None:
         pass
@@ -50,3 +53,18 @@ class TestCreateBoard(unittest2.TestCase):
         board_tiles = [t.name for t in self.new_board.lst_tile]
 
         self.assertItemsEqual(tile_names, board_tiles)
+
+    def testDiceRoll(self):
+        """
+        Dice rolls should behave as expected
+        Make 100 rolls and check that the range falls between 2 and 12
+        """
+        scorecard = {}
+        for i in range(1000):
+            scorecard[sum(self.dice.roll())] = 1
+
+        # A double six-sided die roll cannot be greater than 12
+        self.assertEqual(max(scorecard.keys()), 12)
+
+        # A double six-sided die roll cannot be less than 2
+        self.assertEqual(min(scorecard.keys()), 2)
