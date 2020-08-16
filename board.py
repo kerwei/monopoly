@@ -59,6 +59,48 @@ class Board:
         self.build(schema)
         self.dice = Dice(dice_type='hexa', n=2)
 
+    @property
+    def leader(self) -> list:
+        """
+        Tracks the player that has made the most number of moves across
+        the tiles
+        """
+        leader = []
+        maxsteps = float('-inf')
+
+        for p in self.players:
+            steps = self.player_location[p.token] + \
+                self.player_nround[p.token] * 40
+
+            if steps == maxsteps:
+                leader.append(p)
+            elif steps > maxsteps:
+                leader = [p]
+                maxsteps = steps
+
+        return leader
+
+    @property
+    def last(self) -> list:
+        """
+        Tracks the player that has made the most number of moves across
+        the tiles
+        """
+        last = []
+        minsteps = float('inf')
+
+        for p in self.players:
+            steps = self.player_location[p.token] + \
+                self.player_nround[p.token] * 40
+
+            if steps == minsteps:
+                last.append(p)
+            elif steps < minsteps:
+                last = [p]
+                minsteps = steps
+
+        return last
+
     def assign_turns_by_shuffling(self):
         """
         Assign the turn for each player

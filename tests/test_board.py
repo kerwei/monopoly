@@ -136,7 +136,7 @@ class TestCreateBoard(unittest2.TestCase):
         the leader should not be greater than 39
         """
         # Check that the leader's location index is not greater than 39
-        leader = self.new_board.leader
+        leader = self.new_board.leader[0]
         self.assertLessEqual(
             self.new_board.player_location[leader.token],
             39
@@ -144,7 +144,7 @@ class TestCreateBoard(unittest2.TestCase):
 
         # Check that the last player in the race is not standing at location
         # index of less than 6
-        last = self.new_board.last
+        last = self.new_board.last[0]
         self.assertGreaterEqual(
             self.new_board.player_location[last.token],
             6
@@ -152,4 +152,4 @@ class TestCreateBoard(unittest2.TestCase):
 
         # Check that the location index of all players fall between 0 - 39
         self.assertTrue([
-            0 <= x <= 39 for x in self.new_board.player_location.keys()])
+            0 <= x <= 39 for x in self.new_board.player_location.values()])
