@@ -1,5 +1,11 @@
 {
     "board-sg": {
+        "0": {
+            "name": "GO",
+            "idx": 0,
+            "type": "event",
+            "receive": {"bank": 2000}
+        },
         "1": {
             "name": "Geylang Road",
             "idx": 1,
@@ -591,12 +597,6 @@
                 "house": 50,
                 "hotel": 250
             }
-        },
-        "0": {
-            "name": "GO",
-            "idx": 0,
-            "type": "event",
-            "receive": {"bank": 2000}
         }
     }
 }
