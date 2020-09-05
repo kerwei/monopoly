@@ -31,9 +31,6 @@ class TilePurchasable(Tile):
     def get_charges(self):
         raise NotImplementedError
 
-    def get_action(self):
-        raise NotImplementedError
-
 
 class TileProperty(TilePurchasable):
     capacity = {
@@ -54,9 +51,35 @@ class TileProperty(TilePurchasable):
         }
         self.owner = None
     
-    def liquidate(self) -> int:
+    def get_action(self, visitor: str) -> list:
+        """
+        Return a list of valid actions for the visitor
+        """
+        if self.owner and visitor != self.owner:
+            return [('pay', visitor, self.owner)]
+        elif not self.owner:
+            return [('acquire', self.name)]
+
+        actions = [('liquidate_title')]
+        # Maximum of 1 hotel and 4 houses
+        if self.construct_count['house'] < 4:
+            for i in range(1, self.construct_count['house'] + 1):
+                actions += [('sell_construct', 'house', i)]
+
+            for i in range(1, 5 - self.construct_count['house'])
+                actions += [('add_construct', 'house', i)]
+
+        if self.construct_count['house'] == 4 and not self.construct_count['hotel']:
+            actions += [('add_construct', 'hotel', 1)]
+        elif self.construct_count['hotel']:
+            actions += [('sell_construct', 'hotel', 1)]
+
+        return actions
+
+    def liquidate_title(self) -> int:
         """
         Sell this tile. Returns the proceeds from the sale
+        TODO: This should also recursively sell all constructs
         """
         self.owner = None
         return self.cost['title']
