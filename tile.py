@@ -66,7 +66,7 @@ class TileProperty(TilePurchasable):
             for i in range(1, self.construct_count['house'] + 1):
                 actions += [('sell_construct', 'house', i)]
 
-            for i in range(1, 5 - self.construct_count['house'])
+            for i in range(1, 5 - self.construct_count['house']):
                 actions += [('add_construct', 'house', i)]
 
         if self.construct_count['house'] == 4 and not self.construct_count['hotel']:
