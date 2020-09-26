@@ -31,6 +31,17 @@ class TilePurchasable(Tile):
     def get_charges(self):
         raise NotImplementedError
 
+    def get_action(self, visitor: str) -> list:
+        """
+        Return a list of valid actions for the visitor
+        """
+        if self.owner and visitor != self.owner:
+            return [('pay', visitor, self.owner)]
+        elif not self.owner:
+            return [('acquire', self.name)]
+
+        return [('liquidate_title')]
+
 
 class TileProperty(TilePurchasable):
     capacity = {
@@ -55,34 +66,40 @@ class TileProperty(TilePurchasable):
         """
         Return a list of valid actions for the visitor
         """
-        if self.owner and visitor != self.owner:
-            return [('pay', visitor, self.owner)]
-        elif not self.owner:
-            return [('acquire', self.name)]
+        actions = super().get_action(visitor)
 
-        actions = [('liquidate_title')]
-        # Maximum of 1 hotel and 4 houses
-        if self.construct_count['house'] < 4:
-            for i in range(1, self.construct_count['house'] + 1):
-                actions += [('sell_construct', 'house', i)]
+        if actions[0] == 'liquidate_title':
+            # Maximum of 1 hotel and 4 houses
+            if self.construct_count['house'] < 4:
+                for i in range(1, self.construct_count['house'] + 1):
+                    actions += [('sell_construct', 'house', i)]
 
-            for i in range(1, 5 - self.construct_count['house']):
-                actions += [('add_construct', 'house', i)]
+                for i in range(1, 5 - self.construct_count['house']):
+                    actions += [('add_construct', 'house', i)]
 
-        if self.construct_count['house'] == 4 and not self.construct_count['hotel']:
-            actions += [('add_construct', 'hotel', 1)]
-        elif self.construct_count['hotel']:
-            actions += [('sell_construct', 'hotel', 1)]
+            if self.construct_count['house'] == 4 and not self.construct_count['hotel']:
+                actions += [('add_construct', 'hotel', 1)]
+            elif self.construct_count['hotel']:
+                actions += [('sell_construct', 'hotel', 1)]
 
         return actions
 
-    def liquidate_title(self) -> int:
+    def liquidate(self, asset='construct', **kwargs) -> int:
+        """
+        Sell assets
+        """
+        if asset == 'title':
+            return self.liquidate_title(kwargs['title'])
+        else:
+            raise NotImplementedError
+
+    def liquidate_title(self, title: str) -> int:
         """
         Sell this tile. Returns the proceeds from the sale
         TODO: This should also recursively sell all constructs
         """
         self.owner = None
-        return self.cost['title']
+        return self.cost[title]
 
     def acquire(self, name: str) -> int:
         """
