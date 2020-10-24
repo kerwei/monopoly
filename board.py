@@ -145,6 +145,13 @@ class Board:
         Play out the turn of the next player in queue
         """
         this_player = self.player_roll.issue_next()
+        # Roll the dice and move
+        self.roll_till_move(this_player)
+        # Generate all available actions
+        this_player_tile = self.player_location[this_player]
+        this_actions = this_player_tile.get_action(this_player)
+        # Evaluate the available actions
+
 
     def roll_till_move(self, player: player.Player):
         """
