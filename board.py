@@ -2,7 +2,8 @@ import player
 import random
 import tile
 
-from itertools import cycle
+from collections import Counter
+from itertools import chain, cycle, product
 from tile import TileFactory
 
 
@@ -15,7 +16,7 @@ class ItemCycler:
 
 
 class Dice:
-    def __init__(self, dice_type: str='hexa', n: int=2) -> tuple:
+    def __init__(self, dice_type: str='hexa', n: int=2):
         """
         Default to 2 dice
         """
@@ -28,11 +29,61 @@ class Dice:
         elif dice_type == 'octa':
             self.face = range(1,9)
 
+        self.distribution = self.generate_distribution()
+
     def roll(self):
         """
         Returns the outcome of one roll
         """
         return random.choices(self.face, k=self.dice_count)
+
+    def generate_distribution(self) -> dict:
+        """
+        Returns the distribution of outcome of the rolls
+        doubles: same int on both dice
+        singles: different int on both dice
+        regular: all possible rolls from a 2x 6-sided dice
+        Currently hard-coded to a double reroll, third strike format.
+
+        TODO: Allow other dice roll formats
+        All possible outcome:
+            1. singles
+            2. doubles -> singles
+            3. doubles -> doubles -> regular
+        """
+        n_outcome = max(self.face) ** self.dice_count
+
+        # Regular
+        regular = [i for i in product(self.face, self.face)]
+        regular_sum = [sum(i) for i in regular]
+
+        # Singles
+        single_sum = [sum(i) for i in regular if i[0] != i[1]]
+        p_single = {k: v/(n_outcome) for k, v in Counter(single_sum).items()}
+
+        # Doubles
+        double_sum = [sum(i) for i in regular if i[0] == i[1]]
+        _p_double = 1/n_outcome
+
+        # Doubles -> Singles
+        dblsgl_sum = [sum(i) for i in product(double_sum, single_sum)]
+        p_dblsgl = {
+            k: v * (_p_double ** 2) for k, v in Counter(dblsgl_sum).items()}
+
+        # Doubles -> Doubles -> Singles
+        dbldblsgl_sum = [sum(i) for i in product(
+            double_sum, double_sum, regular_sum)]
+        p_dbldblsgl = {
+            k: v * (_p_double ** 3) for k, v in Counter(dbldblsgl_sum).items()}
+
+        p_outcome = {}
+        for i in range(3, n_outcome + 1):
+            p_outcome[i] = \
+                p_single.get(i, 0) + \
+                p_dblsgl.get(i, 0) + \
+                p_dbldblsgl.get(i, 0)
+
+        return p_outcome
 
 
 class Board:
@@ -152,8 +203,7 @@ class Board:
         this_actions = this_player_tile.get_action(this_player)
         # Evaluate the available actions
 
-
-    def roll_till_move(self, player: player.Player):
+    def roll_till_move(self, player: player.Player) -> None:
         """
         Determine how the dice roll is interpreted i.e. if it's a pair, then
         the player gets a reroll and if 3 pairs get rolled in a row, go to jail
