@@ -1,6 +1,6 @@
 import json
 import os
-import unittest2
+import unittest
 
 import board
 import player
@@ -9,13 +9,12 @@ import tile
 from common import ROOTDIR, DATADIR
 
 
-class TestCreateBoard(unittest2.TestCase):
+class TestCreateBoard(unittest.TestCase):
     def setUp(self) -> None:
         # Load the monopoly-sg schema
-        with open(
-            os.path.join(DATADIR, 'schema_monopoly_sg.json'), 'r'
-        ) as f:
+        with open(os.path.join(DATADIR, 'schema_monopoly_sg.json'), 'r') as f:
             self.schema = json.load(f)
+
         self.lst_token = ['apple','boot','car','dog']
         self.players = [player.Player(p) for p in self.lst_token]
 
@@ -38,10 +37,10 @@ class TestCreateBoard(unittest2.TestCase):
         """
         self.new_board = board.Board(self.lst_token, schema=self.schema)
 
-        all_players = [p.token for p in self.players]
-        board_players = [p.token for p in self.new_board.players]
+        all_players = set([p.token for p in self.players])
+        board_players = set([p.token for p in self.new_board.players])
 
-        self.assertItemsEqual(all_players, board_players)
+        self.assertSetEqual(all_players, board_players)
 
     def testHasAllTiles(self):
         """
@@ -52,7 +51,7 @@ class TestCreateBoard(unittest2.TestCase):
         tile_names = [k['name'] for k in self.schema['board-sg'].values()]
         board_tiles = [t.name for t in self.new_board.lst_tile]
 
-        self.assertItemsEqual(tile_names, board_tiles)
+        self.assertListEqual(tile_names, board_tiles)
 
     def testDiceRoll(self):
         """
@@ -80,17 +79,11 @@ class TestCreateBoard(unittest2.TestCase):
         first = self.new_board.player_roll.issue_next()
 
         # At the start, all players are located on the GO tile
-        self.assertEqual(
-            self.new_board.player_location[first.token],
-            0
-        )
+        self.assertEqual(self.new_board.player_location[first.token], 0)
 
         # Move the player to Jail
         self.new_board.move_to_index(first, 10)
-        self.assertEqual(
-            self.new_board.player_location[first.token],
-            10
-        )
+        self.assertEqual(self.new_board.player_location[first.token], 10)
 
     def testMoveBySteps(self):
         """
@@ -103,17 +96,11 @@ class TestCreateBoard(unittest2.TestCase):
         first = self.new_board.player_roll.issue_next()
 
         # At the start, all players are located on the GO tile
-        self.assertEqual(
-            self.new_board.player_location[first.token],
-            0
-        )
+        self.assertEqual(self.new_board.player_location[first.token], 0)
 
         # Move the player to Jail
         self.new_board.move_by_steps(first, 6)
-        self.assertEqual(
-            self.new_board.player_location[first.token],
-            6
-        )
+        self.assertEqual(self.new_board.player_location[first.token], 6)
 
     def testRaceOneLap(self):
         """
@@ -137,18 +124,12 @@ class TestCreateBoard(unittest2.TestCase):
         """
         # Check that the leader's location index is not greater than 39
         leader = self.new_board.leader[0]
-        self.assertLessEqual(
-            self.new_board.player_location[leader.token],
-            39
-        )
+        self.assertLessEqual(self.new_board.player_location[leader.token], 39)
 
         # Check that the last player in the race is not standing at location
         # index of less than 6
         last = self.new_board.last[0]
-        self.assertGreaterEqual(
-            self.new_board.player_location[last.token],
-            6
-        )
+        self.assertGreaterEqual(self.new_board.player_location[last.token], 6)
 
         # Check that the location index of all players fall between 0 - 39
         self.assertTrue([
