@@ -2,18 +2,36 @@ import abc
 import json
 import os
 import random
+from typing import Optional
 
-from common import DATADIR
+from common import DATADIR, capacity
 
 
 class Tile(metaclass=abc.ABCMeta):
     def __init__(self):
-        raise NotImplementedError
+        self.owner = None
 
     @abc.abstractmethod
-    def get_action(self, token: str):
+    def get_action(self, token: str) -> list:
+        """
+        All available actions to this player
+        """
         raise NotImplementedError
 
+    def value_to(self, token: str, ntile: int) -> float:
+        """
+        The cost incurred from landing on this tile to this player
+        """
+        if not self.owner or token == self.owner:
+            return 0
+
+        return self.get_charges(str(ntile))
+
+    def get_charges(self, ntile: Optional[str]='0') -> int:
+        """
+        Standard method for the Tile class. Returns 0
+        """
+        return 0
 
 class TilePurchasable(Tile):
     """
@@ -25,10 +43,6 @@ class TilePurchasable(Tile):
 
     @abc.abstractmethod
     def acquire(self):
-        raise NotImplementedError
-
-    @abc.abstractmethod
-    def get_charges(self):
         raise NotImplementedError
 
     def get_action(self, visitor: str) -> list:
@@ -44,11 +58,6 @@ class TilePurchasable(Tile):
 
 
 class TileProperty(TilePurchasable):
-    capacity = {
-        'house': 4,
-        'hotel': 1
-    }
-
     def __init__(self, schema: dict):
         self.name = schema['name']
         self.idx = schema['idx']
@@ -60,8 +69,9 @@ class TileProperty(TilePurchasable):
             'house': 0,
             'hotel': 0
         }
+
         self.owner = None
-    
+
     def get_action(self, visitor: str) -> list:
         """
         Return a list of valid actions for the visitor
@@ -108,15 +118,14 @@ class TileProperty(TilePurchasable):
         self.owner = name
         return self.cost['title']
 
-    def get_charges(self, n_tile: int) -> int:
+    def get_charges(self, ntile: str) -> int:
         """
         Calculate the charges upon this visitor. n_tile is the number of same-
         color tiles owned by the owner of this tile (to be supplied by the
         Board class)
         """
         # Charges on the title
-        tile_fee = self.schedule_fee['title'] * n_tile
-
+        tile_fee = self.schedule_fee['title'].get(ntile, 0)
         # Charges on the constructed properties
         construct_fee = \
             self.construct_count['house'] * self.schedule_fee['house'] \
@@ -137,7 +146,7 @@ class TileProperty(TilePurchasable):
         if self.construct_count[contype] == capacity[contype]:
             return 0
 
-        self.construct_count[contype] += 1
+        self.construct_count[contype] += qty
 
         return self.cost[contype]
 
@@ -165,20 +174,19 @@ class TileInfra(TilePurchasable):
         self.owner = name
         return self.cost['title']
 
-    def get_charges(self, n_tile: int) -> int:
+    def get_charges(self, n_tile: str) -> int:
         """
         Calculate the charges upon this visitor. n_tile is the number of same-
         color tiles owned by the owner of this tile (to be supplied by the
         Board class)
         """
-        return self.schedule_fee['title'] * n_tile
+        return self.schedule_fee['title'].get(n_tile, 0)
 
 
 class TileEvent(Tile):
     def __init__(self, schema: dict):
         self.name = schema['name']
         self.idx = schema['idx']
-
 
 class TileIncomeTax(TileEvent):
     def __init__(self, schema: dict):
@@ -190,6 +198,12 @@ class TileIncomeTax(TileEvent):
         Pay to bank the specified amount
         """
         return {'pay': self.action}
+
+    def get_charges(self):
+        """
+        Set this to a fixed 2000 for now. Used for agent decision making
+        """
+        return 2000
 
 
 class TileSuperTax(TileEvent):
@@ -203,6 +217,11 @@ class TileSuperTax(TileEvent):
         """
         return {'pay': self.action}
 
+    def get_charges(self):
+        """
+        Set this to a fixed 750 for now. Used for agent decision making
+        """
+        return 750
 
 class TileGO(TileEvent):
     def __init__(self, schema: dict):
