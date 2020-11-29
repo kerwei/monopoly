@@ -9,7 +9,7 @@ import tile
 from common import ROOTDIR, DATADIR
 
 
-class TestCreateBoard(unittest.TestCase):
+class TestGameBoard(unittest.TestCase):
     def setUp(self) -> None:
         # Load the monopoly-sg schema
         with open(os.path.join(DATADIR, 'schema_monopoly_sg.json'), 'r') as f:
@@ -18,27 +18,28 @@ class TestCreateBoard(unittest.TestCase):
         self.lst_token = ['apple','boot','car','dog']
         self.players = [player.Player(p) for p in self.lst_token]
 
-        # # Use double six-sided dice
+        # Use double six-sided dice
         self.dice = board.Dice(dice_type='hexa', n=2)
+        # Init the board
+        self.new_board = board.Board(self.lst_token, schema=self.schema)
 
     def tearDown(self) -> None:
         pass
 
+
+class TestCreateBoard(TestGameBoard):
     def testCreateBoard(self):
         """
         Make sure that the board can be created
         """
-        self.new_board = board.Board(self.lst_token, schema=self.schema)
         self.assertIsInstance(self.new_board, board.Board)
 
     def testHasAllPlayers(self):
         """
         Make sure that all players are included
         """
-        self.new_board = board.Board(self.lst_token, schema=self.schema)
-
         all_players = set([p.token for p in self.players])
-        board_players = set([p.token for p in self.new_board.players])
+        board_players = set([p.token for p in self.new_board.players.values()])
 
         self.assertSetEqual(all_players, board_players)
 
@@ -46,8 +47,6 @@ class TestCreateBoard(unittest.TestCase):
         """
         Make sure that the schema is loaded properly
         """
-        self.new_board = board.Board(self.lst_token, schema=self.schema)
-
         tile_names = [k['name'] for k in self.schema['board-sg'].values()]
         board_tiles = [t.name for t in self.new_board.lst_tile]
 
@@ -73,8 +72,6 @@ class TestCreateBoard(unittest.TestCase):
         It is possible to change the location of a player
         by specifying the index or the number of steps
         """
-        self.new_board = board.Board(self.lst_token, schema=self.schema)
-
         # Get the identity of the first player
         first = self.new_board.player_roll.issue_next()
 
@@ -90,8 +87,6 @@ class TestCreateBoard(unittest.TestCase):
         It is possible to change the location of a player
         by specifying the index or the number of steps
         """
-        self.new_board = board.Board(self.lst_token, schema=self.schema)
-
         # Get the identity of the first player
         first = self.new_board.player_roll.issue_next()
 
@@ -107,8 +102,6 @@ class TestCreateBoard(unittest.TestCase):
         Players race each other to make one full round across the board back
         to the GO tile
         """
-        self.new_board = board.Board(self.lst_token, schema=self.schema)
-
         # Players take turns to move until one of them races past the GO tile
         # for the first time
         while set(self.new_board.player_nround.values()) == {1}:
@@ -134,3 +127,72 @@ class TestCreateBoard(unittest.TestCase):
         # Check that the location index of all players fall between 0 - 39
         self.assertTrue([
             0 <= x <= 39 for x in self.new_board.player_location.values()])
+
+
+class TestPlayGame(TestGameBoard):
+    def setUp(self) -> None:
+        # Load the monopoly-sg schema
+        with open(os.path.join(DATADIR, 'schema_monopoly_sg.json'), 'r') as f:
+            self.schema = json.load(f)
+
+        self.lst_token = ['apple','boot','car','dog']
+        self.players = [player.Player(p) for p in self.lst_token]
+
+        # Use double six-sided dice
+        self.dice = board.Dice(dice_type='hexa', n=2)
+        # Init the board
+        self.new_board = board.Board(self.lst_token, schema=self.schema)
+
+    def tearDown(self) -> None:
+        pass
+
+    def allocate_sequence_ownership(self) -> None:
+        """
+        Used in conjunction with the test
+        to calculate the overall expected terrain value
+        """
+        board = self.new_board
+        n = len(self.players)
+        i = 0
+
+        # Sequentially allocate ownership of tiles
+        for tile in board.lst_tile:
+            if hasattr(tile, 'owner'):
+                player = self.players[i % n]
+                # Execute the purchase
+                tile.acquire(player.token)
+                player.asset_acquire(tile)
+                # Update the colorgrp ownership dct
+                colorgrp = self.new_board.colorgrp
+                colorgrp[tile.color][player.token] = \
+                    colorgrp[tile.color].get(player.token, 0) + 1
+
+                i += 1
+
+        return
+
+    def testAllocateOwnership(self):
+        """
+        The sequential assignment of ownership should work as expected
+        """
+        board = self.new_board
+        self.allocate_sequence_ownership()
+
+        lst_owner = [getattr(tile, 'owner', None) for tile in board.lst_tile]
+
+        self.assertListEqual(lst_owner,[
+            None, 'apple', None, 'boot', None, 'car', 'dog', None, 'apple',
+            'boot', None, 'car', 'dog', 'apple', 'boot', 'car', 'dog', None,
+            'apple', 'boot', None, 'car', None, 'dog', 'apple', 'boot', 'car',
+            'dog', 'apple', 'boot', None, 'car', 'dog', None, 'apple', 'boot',
+            None, 'car', None, 'dog'])
+
+    def testBasicTerrainValue(self):
+        """
+        Check that the expected value of the terrain gets computed correctly
+        """
+        board = self.new_board
+        self.allocate_sequence_ownership()
+
+        board.player_location = {'apple': 0, 'boot': 1, 'car': 3, 'dog': 6}
+        print(board.calculate_terrain_value(board.players['apple']))
