@@ -1,17 +1,18 @@
 import player
 import random
+from player import Player
 import tile
 
 from collections import Counter
 from itertools import chain, cycle, product
-from tile import TileFactory
+from tile import Tile, TileFactory
 
 
 class ItemCycler:
     def __init__(self, lst_items: list):
         self.roll = cycle(lst_items)
 
-    def issue_next(self) -> "list_element":
+    def issue_next(self) -> Player:
         return next(self.roll)
 
 
@@ -93,13 +94,18 @@ class Board:
     def __init__(self, lst_player: list, schema: dict):
         # For now players are added based on list sequence. A method will be
         # added to determine the turn of each player later
-        self.players = [player.Player(p) for p in lst_player]
-        self.assign_turns_by_shuffling()
-        self.player_roll = ItemCycler(self.players)
+        self.players = {p: player.Player(p) for p in lst_player}
+        lst_turn = self.assign_turns_by_shuffling()
+        self.player_roll = ItemCycler([self.players[p] for p in lst_turn])
+
+        self.colorgrp = {}
+        for dct in schema['board-sg'].values():
+            if dct.get('color'):
+                self.colorgrp[dct['color']] = {}
 
         self.lst_tile = []
-        self.player_location = {p.token: 0 for p in self.players}
-        self.player_nround = {p.token: 1 for p in self.players}
+        self.player_location = {p.token: 0 for p in self.players.values()}
+        self.player_nround = {p.token: 1 for p in self.players.values()}
 
         # Community Chest and Chance decks should be initialized only once
         # since cards are drawn from the same instance
@@ -120,9 +126,10 @@ class Board:
         maxsteps = float('-inf')
 
         for p in self.players:
-            steps = self.player_location[p.token] + \
-                self.player_nround[p.token] * 40
+            steps = self.player_location[p] + \
+                self.player_nround[p] * 40
 
+            p = self.players[p]     # Convert token to the Player object
             if steps == maxsteps:
                 leader.append(p)
             elif steps > maxsteps:
@@ -141,9 +148,10 @@ class Board:
         minsteps = float('inf')
 
         for p in self.players:
-            steps = self.player_location[p.token] + \
-                self.player_nround[p.token] * 40
+            steps = self.player_location[p] + \
+                self.player_nround[p] * 40
 
+            p = self.players[p]     # Convert token to the Player object
             if steps == minsteps:
                 last.append(p)
             elif steps < minsteps:
@@ -152,11 +160,12 @@ class Board:
 
         return last
 
-    def assign_turns_by_shuffling(self):
+    def assign_turns_by_shuffling(self) -> list:
         """
         Assign the turn for each player
         """
-        random.shuffle(self.players)
+        lst_token = self.players.keys()
+        return random.sample(lst_token, len(lst_token))
 
     def build(self, schema: dict) -> None:
         """
@@ -169,6 +178,36 @@ class Board:
                 self.lst_tile += [self._community_chest]
             else:
                 self.lst_tile += [TileFactory.create(v)]
+
+    def calculate_terrain_value(self, player: player.Player) -> float:
+        """
+        Return the series of realizable tile values for this player
+        """
+        p_loc = self.player_location[player.token]
+
+        moves = [k for k in self.dice.distribution.keys()]
+        move_range = max(moves) - min(moves)
+
+        lst_terrain = self.lst_tile[p_loc + min(moves):]
+        if len(lst_terrain) >= move_range:
+            lst_terrain = lst_terrain[:move_range + 1]
+        else:
+            balance = move_range - len(lst_terrain)
+            lst_terrain += self.lst_tile[:balance]
+
+        pval = self.dice.distribution
+        terrain_value = [0] * len(lst_terrain)
+        # Count of tiles in a group belonging to the owner
+        for i, tile in enumerate(lst_terrain, start=min(moves)):
+            if not getattr(tile, 'color', None):
+                terrain_value[i - min(moves)] = tile.get_charges() * pval[i]
+                continue
+
+            ntile = self.colorgrp[tile.color].get(tile.owner, 0)
+            terrain_value[i - min(moves)] = \
+                tile.value_to(player.token, ntile) * pval[i]
+
+        return sum(terrain_value)
 
     def move_to_index(self, player: player.Player, n: int, pastgo: bool=True):
         """
@@ -202,6 +241,19 @@ class Board:
         this_player_tile = self.player_location[this_player]
         this_actions = this_player_tile.get_action(this_player)
         # Evaluate the available actions
+
+    def player_buy(self, tile: Tile, player: Player) -> None:
+        """
+        Execute a buy transaction for the player
+        """
+        # Reduce player cash by tile cost
+        player.balance -= tile.cost
+        # Set player as the owner of the tile
+        tile.owner = player.token
+        # Update property group dict
+        self.colorgrp[tile.color][player.token] = \
+            self.colorgrp[tile.color].get(player.token, 0) + 1
+
 
     def roll_till_move(self, player: player.Player) -> None:
         """
