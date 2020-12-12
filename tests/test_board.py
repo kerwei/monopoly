@@ -196,3 +196,29 @@ class TestPlayGame(TestGameBoard):
 
         board.player_location = {'apple': 0, 'boot': 1, 'car': 3, 'dog': 6}
         print(board.calculate_terrain_value(board.players['apple']))
+
+    def testBuyProperty(self):
+        """
+        A purchase should reduce the balance of the new owner
+        """
+        # apple
+        player = self.players[0]
+        # Geylang Road
+        tile = self.new_board.lst_tile[1]
+
+        self.new_board.player_buy(tile, player)
+        self.assertEqual(player.balance, 900)
+
+    def testSellProperty(self):
+        """
+        A purchase should reduce the balance of the new owner
+        """
+        # Assign tile ownership first
+        self.allocate_sequence_ownership()
+        # apple
+        player = self.players[0]
+        # Geylang Road
+        tile = self.new_board.lst_tile[1]
+
+        self.new_board.player_sell(tile, player)
+        self.assertEqual(player.balance, 2100)
