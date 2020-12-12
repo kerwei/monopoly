@@ -1,12 +1,13 @@
-import player
 import random
-from player import Player
-import tile
 
 from collections import Counter
 from itertools import chain, cycle, product
-from tile import Tile, TileFactory
+from typing import List, Sequence
 
+import player
+import tile
+from player import Player
+from tile import Tile, TileFactory
 
 class ItemCycler:
     def __init__(self, lst_items: list):
@@ -91,7 +92,7 @@ class Board:
     """
     The main board game class
     """
-    def __init__(self, lst_player: list, schema: dict):
+    def __init__(self, lst_player: Sequence[List[str]], schema: dict):
         # For now players are added based on list sequence. A method will be
         # added to determine the turn of each player later
         self.players = {p: player.Player(p) for p in lst_player}
@@ -113,7 +114,7 @@ class Board:
         self._chance = tile.TileChance()
 
         # Build the board
-        self.build(schema)
+        self.build_board(schema)
         self.dice = Dice(dice_type='hexa', n=2)
 
     @property
@@ -167,7 +168,7 @@ class Board:
         lst_token = self.players.keys()
         return random.sample(lst_token, len(lst_token))
 
-    def build(self, schema: dict) -> None:
+    def build_board(self, schema: dict) -> None:
         """
         Constructs the full board
         """
@@ -239,21 +240,32 @@ class Board:
         self.roll_till_move(this_player)
         # Generate all available actions
         this_player_tile = self.player_location[this_player]
-        this_actions = this_player_tile.get_action(this_player)
+        lst_actions = this_player_tile.get_action(this_player)
         # Evaluate the available actions
+        print(lst_actions)
 
     def player_buy(self, tile: Tile, player: Player) -> None:
         """
         Execute a buy transaction for the player
         """
         # Reduce player cash by tile cost
-        player.balance -= tile.cost
+        player.balance -= tile.cost['title']
         # Set player as the owner of the tile
         tile.owner = player.token
         # Update property group dict
         self.colorgrp[tile.color][player.token] = \
             self.colorgrp[tile.color].get(player.token, 0) + 1
 
+    def player_sell(self, tile: Tile, player: Player) -> None:
+        """
+        Execute a sell transaction for the player
+        """
+        # Reduce player cash by tile cost
+        player.balance += tile.cost['title']
+        # Set player as the owner of the tile
+        tile.owner = None
+        # Update property group dict
+        self.colorgrp[tile.color][player.token] -= 1
 
     def roll_till_move(self, player: player.Player) -> None:
         """
