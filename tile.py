@@ -94,22 +94,33 @@ class TileProperty(TilePurchasable):
 
         return actions
 
-    def liquidate(self, asset='construct', **kwargs) -> int:
+    def liquidate_constructs(self) -> int:
         """
-        Sell assets
+        Sell the constructed buildings. Returns the proceeds from the sale
         """
-        if asset == 'title':
-            return self.liquidate_title(kwargs['title'])
-        else:
-            raise NotImplementedError
+        constructs = sum([v for k, v in self.construct_count.items()])
+        if not constructs:
+            raise Exception('No more constructs on this tile')
 
-    def liquidate_title(self, title: str) -> int:
+        # Constructs can only be sold in sequence: hotels -> house
+        if self.construct_count['hotel']:
+            self.construct_count['hotel'] -= 1
+            return self.cost['hotel']
+
+        self.construct_count['house'] -= 1
+        return self.cost['house']
+
+    def liquidate_title(self) -> int:
         """
         Sell this tile. Returns the proceeds from the sale
         TODO: This should also recursively sell all constructs
         """
+        construct = sum([v for k, v in self.construct_count.items()])
+        if construct:
+            raise Exception('Tile is not empty of constructs')
+
         self.owner = None
-        return self.cost[title]
+        return self.cost['title']
 
     def acquire(self, name: str) -> int:
         """
