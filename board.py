@@ -1,6 +1,7 @@
 import random
 
 from collections import Counter
+from collections.abc import Callable
 from itertools import chain, cycle, product
 from typing import List, Sequence
 
@@ -95,7 +96,7 @@ class Board:
     def __init__(self, lst_player: Sequence[List[str]], schema: dict):
         # For now players are added based on list sequence. A method will be
         # added to determine the turn of each player later
-        self.players = {p: player.Player(p) for p in lst_player}
+        self.players = {p: Player(p) for p in lst_player}
         lst_turn = self.assign_turns_by_shuffling()
         self.player_roll = ItemCycler([self.players[p] for p in lst_turn])
 
@@ -180,7 +181,7 @@ class Board:
             else:
                 self.lst_tile += [TileFactory.create(v)]
 
-    def calculate_terrain_value(self, player: player.Player) -> float:
+    def calculate_terrain_value(self, player: Player) -> float:
         """
         Return the series of realizable tile values for this player
         """
@@ -210,7 +211,23 @@ class Board:
 
         return sum(terrain_value)
 
-    def move_to_index(self, player: player.Player, n: int, pastgo: bool=True):
+    def liquidate_player(self, player: Player, f: Callable[..., str]) -> bool:
+        """
+        Liquidate the assets of a player until the balance becomes positive.
+        Takes the liquidation strategy function as the second argument, which
+        makes the decision on which asset to liquidate next.
+        Returns True if player's balance returns to positive, else False
+        """
+        while player.balance < 0:
+            tile = f(player)
+            self.player_sell(tile, player)
+
+            if not player.assets:
+                return False
+
+        return True
+
+    def move_to_index(self, player: Player, n: int, pastgo: bool=True):
         """
         Move the player token by the index number. Add 1 to round count if
         moving past the GO tile
@@ -220,7 +237,7 @@ class Board:
 
         self.player_location[player.token] = n
 
-    def move_by_steps(self, player: player.Player, n: int):
+    def move_by_steps(self, player: Player, n: int):
         """
         Move the player token by the number of steps. Add 1 to round count if
         moving past the GO tile
@@ -249,7 +266,7 @@ class Board:
         Execute a buy transaction for the player
         """
         # Reduce player cash by tile cost
-        player.balance -= tile.cost['title']
+        player.pay(tile.cost['title'])
         # Set player as the owner of the tile
         tile.owner = player.token
         # Update property group dict
@@ -261,13 +278,13 @@ class Board:
         Execute a sell transaction for the player
         """
         # Reduce player cash by tile cost
-        player.balance += tile.cost['title']
+        player.receive(tile.cost['title'])
         # Set player as the owner of the tile
         tile.owner = None
         # Update property group dict
         self.colorgrp[tile.color][player.token] -= 1
 
-    def roll_till_move(self, player: player.Player) -> None:
+    def roll_till_move(self, player: Player) -> None:
         """
         Determine how the dice roll is interpreted i.e. if it's a pair, then
         the player gets a reroll and if 3 pairs get rolled in a row, go to jail
@@ -287,3 +304,16 @@ class Board:
             return
 
         self.move_by_steps(player, steps)
+
+    def transact(self, payer: Player, receipt: Player, amount: int) -> int:
+        """
+        Execute a pay and receive transaction
+        Returns 1 if complete and 0 if the payer has insufficient balance
+        """
+        receipt.receive(amount)
+        payer.pay(amount)
+
+        if payer.balance < 0:
+            self.liquidate_player(payer)
+
+        return
