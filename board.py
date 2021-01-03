@@ -5,6 +5,7 @@ from collections.abc import Callable
 from itertools import chain, cycle, product
 from typing import List, Sequence
 
+import agent
 import player
 import tile
 from player import Player
@@ -211,21 +212,22 @@ class Board:
 
         return sum(terrain_value)
 
-    def liquidate_player(self, player: Player, f: Callable[..., str]) -> bool:
+    def liquidate_player(self, player: Player) -> bool:
         """
         Liquidate the assets of a player until the balance becomes positive.
         Takes the liquidation strategy function as the second argument, which
         makes the decision on which asset to liquidate next.
         Returns True if player's balance returns to positive, else False
         """
-        while player.balance < 0:
-            tile = f(player)
-            self.player_sell(tile, player)
+        # TODO: the player instance should inherit both the Player class and
+        # the Agent class. cp_asset_sale should compute the list of assets to
+        # be sold based on its Agent strategy
+        assets = player.cp_asset_sale(-player.balance)
 
-            if not player.assets:
-                return False
+        for ast in assets:
+            self.player_sell(ast)
 
-        return True
+        return True if player.balance >= 0 else False
 
     def move_to_index(self, player: Player, n: int, pastgo: bool=True):
         """
@@ -307,7 +309,7 @@ class Board:
 
     def transact(self, payer: Player, receipt: Player, amount: int) -> int:
         """
-        Execute a pay and receive transaction
+        Execute a pay and receive transaction (non-buy/sell)
         Returns 1 if complete and 0 if the payer has insufficient balance
         """
         receipt.receive(amount)
