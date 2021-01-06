@@ -38,7 +38,7 @@ class TilePurchasable(Tile):
     Metaclass for properties, infra and utils
     """
     @abc.abstractmethod
-    def liquidate(self):
+    def liquidate_title(self):
         raise NotImplementedError
 
     @abc.abstractmethod
@@ -171,7 +171,7 @@ class TileInfra(TilePurchasable):
         self.schedule_fee = schema['schedule']
         self.owner = None
     
-    def liquidate(self) -> int:
+    def liquidate_title(self) -> int:
         """
         Sell this tile. Returns the proceeds from the sale
         """
