@@ -1,5 +1,4 @@
 import abc
-from typing import Type
 
 from player import Player
 
@@ -27,21 +26,3 @@ class Agent(Player, BaseAgent):
 
     def __init__(self, **kwargs) -> None:
         super().__init__(kwargs['token'])
-
-
-class TestAgentOne(Agent):
-    def cp_asset_sale(self, amt: float) -> str:
-        pass
-
-
-class TestAgentTwo(Agent):
-    pass
-
-
-def create_player_agent(agent: str, token: str) -> "Agent":
-    if agent == 'one':
-        agent = TestAgentOne
-    elif agent == 'two':
-        agent = TestAgentTwo
-
-    return Agent(agent=agent, token=token)

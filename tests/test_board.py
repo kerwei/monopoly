@@ -9,6 +9,32 @@ import tile
 from common import ROOTDIR, DATADIR
 
 
+def allocate_sequence_ownership(board: board.Board) -> None:
+    """
+    Used in conjunction with the test
+    to calculate the overall expected terrain value
+    """
+    lst_players = [x for x in board.players.values()]
+    n = len(lst_players)
+    i = 0
+
+    # Sequentially allocate ownership of tiles
+    for tile in board.lst_tile:
+        if hasattr(tile, 'owner'):
+            player = lst_players[i % n]
+            # Execute the purchase
+            tile.acquire(player.token)
+            player.asset_acquire(tile)
+            # Update the colorgrp ownership dct
+            colorgrp = board.colorgrp
+            colorgrp[tile.color][player.token] = \
+                colorgrp[tile.color].get(player.token, 0) + 1
+
+            i += 1
+
+    return board
+
+
 class TestGameBoard(unittest.TestCase):
     def setUp(self) -> None:
         # Load the monopoly-sg schema
@@ -146,37 +172,12 @@ class TestPlayGame(TestGameBoard):
     def tearDown(self) -> None:
         pass
 
-    def allocate_sequence_ownership(self) -> None:
-        """
-        Used in conjunction with the test
-        to calculate the overall expected terrain value
-        """
-        board = self.new_board
-        n = len(self.players)
-        i = 0
-
-        # Sequentially allocate ownership of tiles
-        for tile in board.lst_tile:
-            if hasattr(tile, 'owner'):
-                player = self.players[i % n]
-                # Execute the purchase
-                tile.acquire(player.token)
-                player.asset_acquire(tile)
-                # Update the colorgrp ownership dct
-                colorgrp = self.new_board.colorgrp
-                colorgrp[tile.color][player.token] = \
-                    colorgrp[tile.color].get(player.token, 0) + 1
-
-                i += 1
-
-        return
-
     def testAllocateOwnership(self):
         """
         The sequential assignment of ownership should work as expected
         """
         board = self.new_board
-        self.allocate_sequence_ownership()
+        board = allocate_sequence_ownership(board)
 
         lst_owner = [getattr(tile, 'owner', None) for tile in board.lst_tile]
 
@@ -192,7 +193,7 @@ class TestPlayGame(TestGameBoard):
         Check that the expected value of the terrain gets computed correctly
         """
         board = self.new_board
-        self.allocate_sequence_ownership()
+        board = allocate_sequence_ownership(board)
 
         board.player_location = {'apple': 0, 'boot': 1, 'car': 3, 'dog': 6}
         print(board.calculate_terrain_value(board.players['apple']))
@@ -214,11 +215,12 @@ class TestPlayGame(TestGameBoard):
         A purchase should reduce the balance of the new owner
         """
         # Assign tile ownership first
-        self.allocate_sequence_ownership()
+        board = self.new_board
+        board = allocate_sequence_ownership(board)
         # apple
-        player = self.players[0]
+        player = board.players['apple']
         # Geylang Road
-        tile = self.new_board.lst_tile[1]
+        tile = board.lst_tile[1]
 
-        self.new_board.player_sell(tile, player)
+        board.player_sell(tile, player)
         self.assertEqual(player.balance, 2100)
