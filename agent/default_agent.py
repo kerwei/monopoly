@@ -12,7 +12,7 @@ class NaiveAgent(Agent):
         """
         Default strategy: sell the least number of assets to cover shortfall
         """
-        lst = list(itertools.chain(*[x for x in self.assets]))
+        lst = list(itertools.chain(*[x for x in self.assets.values()]))
         lst = [(getattr(x, 'idx'), getattr(x, 'cost').get('title')) \
             for x in lst]
 
@@ -27,12 +27,9 @@ class NaiveAgent(Agent):
             for grp in cbn:
                 diff = sum([x[1] for x in grp]) - amt
 
-                if diff > 0 and diff < surplus:
+                if diff >= 0 and diff < surplus:
                     surplus = diff
                     combi = tuple([x[0] for x in grp])
-
-            if combi:
-                break
 
             i += 1
 
