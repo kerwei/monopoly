@@ -1,3 +1,4 @@
+from agent.agent_factory import create_player_agent
 import random
 
 from collections import Counter
@@ -97,7 +98,8 @@ class Board:
     def __init__(self, lst_player: Sequence[List[str]], schema: dict):
         # For now players are added based on list sequence. A method will be
         # added to determine the turn of each player later
-        self.players = {p: Player(p) for p in lst_player}
+        self.players = {
+            p: create_player_agent('default', p) for p in lst_player}
         lst_turn = self.assign_turns_by_shuffling()
         self.player_roll = ItemCycler([self.players[p] for p in lst_turn])
 
