@@ -3,7 +3,7 @@ import random
 
 from collections import Counter
 from collections.abc import Callable
-from itertools import chain, cycle, product
+from itertools import chain, cycle, product, zip_longest
 from typing import List, Sequence
 
 import agent
@@ -96,6 +96,15 @@ class Board:
     The main board game class
     """
     def __init__(self, lst_player: Sequence[List[str]], schema: dict):
+        self.dct_actions = {
+            'acquire': self.player_buy,
+            'add_construct': None,
+            'liquidate_title': self.player_sell,
+            'pay': self.transact,
+            'sell_construct': None,
+            'do_nothing': None
+        }
+
         # For now players are added based on list sequence. A method will be
         # added to determine the turn of each player later
         self.players = {
@@ -260,10 +269,20 @@ class Board:
         # Roll the dice and move
         self.roll_till_move(this_player)
         # Generate all available actions
-        this_player_tile = self.player_location[this_player]
+        this_player_tile = self.lst_tile[
+            self.player_location[this_player.token]]
         lst_actions = this_player_tile.get_action(this_player)
         # Evaluate the available actions
-        print(lst_actions)
+        # TODO: Create a method to pack each method with the required params
+
+        lst_actions = [(self.dct_actions[x[0]], x[1]) for x in lst_actions] + \
+            [(self.dct_actions['do_nothing'], None)]
+
+        next_action = this_player.cp_take_action(lst_actions)
+        action, params = next_action
+        action(**params)
+
+        return
 
     def player_buy(self, tile: Tile, player: Player) -> None:
         """
@@ -309,13 +328,13 @@ class Board:
 
         self.move_by_steps(player, steps)
 
-    def transact(self, payer: Player, receipt: Player, amount: int) -> int:
+    def transact(self, payer: Player, payee: Player, amt: int) -> int:
         """
         Execute a pay and receive transaction (non-buy/sell)
         Returns 1 if complete and 0 if the payer has insufficient balance
         """
-        receipt.receive(amount)
-        payer.pay(amount)
+        payee.receive(amt)
+        payer.pay(amt)
 
         if payer.balance < 0:
             self.liquidate_player(payer)

@@ -50,11 +50,11 @@ class TilePurchasable(Tile):
         Return a list of valid actions for the visitor
         """
         if self.owner and visitor != self.owner:
-            return [('pay', visitor, self.owner)]
+            return [tuple(['pay', {'payer': visitor, 'payee': self.owner}])]
         elif not self.owner:
-            return [('acquire', self.name)]
+            return [tuple(['acquire', {'tile': self.name}])]
 
-        return [('liquidate_title')]
+        return None
 
 
 class TileProperty(TilePurchasable):
@@ -82,15 +82,20 @@ class TileProperty(TilePurchasable):
             # Maximum of 1 hotel and 4 houses
             if self.construct_count['house'] < 4:
                 for i in range(1, self.construct_count['house'] + 1):
-                    actions += [('sell_construct', 'house', i)]
+                    actions += [
+                        tuple(['sell_construct', {'type': 'house', 'amt': i}])]
 
                 for i in range(1, 5 - self.construct_count['house']):
-                    actions += [('add_construct', 'house', i)]
+                    actions += [
+                        tuple(['add_construct', {'type': 'house', 'amt': i}])]
 
-            if self.construct_count['house'] == 4 and not self.construct_count['hotel']:
-                actions += [('add_construct', 'hotel', 1)]
+            if self.construct_count['house'] == 4 and \
+                not self.construct_count['hotel']:
+                actions += [
+                    tuple(['add_construct', {'type': 'hotel', 'amt': 1}])]
             elif self.construct_count['hotel']:
-                actions += [('sell_construct', 'hotel', 1)]
+                actions += [
+                    tuple(['sell_construct', {'type': 'hotel', 'amt': 1}])]
 
         return actions
 
@@ -204,11 +209,11 @@ class TileIncomeTax(TileEvent):
         super().__init__(schema)
         self.action = schema['pay']
 
-    def get_action(self):
+    def get_action(self) -> list:
         """
         Pay to bank the specified amount
         """
-        return {'pay': self.action}
+        return [tuple([{'pay': self.action}])]
 
     def get_charges(self):
         """
@@ -222,11 +227,11 @@ class TileSuperTax(TileEvent):
         super().__init__(schema)
         self.action = schema['pay']
 
-    def get_action(self):
+    def get_action(self) -> list:
         """
         Pay to bank the specified amount
         """
-        return {'pay': self.action}
+        return [tuple([{'pay': self.action}])]
 
     def get_charges(self):
         """
@@ -239,11 +244,11 @@ class TileGO(TileEvent):
         super().__init__(schema)
         self.action = schema['receive']
 
-    def get_action(self):
+    def get_action(self) -> list:
         """
         Pay to bank the specified amount
         """
-        return {'receive': self.action}
+        return [tuple([{'pay': -self.action}])]
 
 
 class TileGoToJail(TileEvent):
@@ -251,11 +256,11 @@ class TileGoToJail(TileEvent):
         super().__init__(schema)
         self.action = schema['move']
 
-    def get_action(self):
+    def get_action(self) -> list:
         """
         Pay to bank the specified amount
         """
-        return {'move': self.action}
+        return [tuple([{'move': self.action}])]
 
 
 class TileEventDeck(TileEvent):
@@ -282,7 +287,7 @@ class TileEventDeck(TileEvent):
         """
         random.shuffle(self.deck)
 
-    def get_action(self):
+    def get_action(self) -> list:
         """
         Draw a card from the deck for the given player
         """
@@ -290,7 +295,7 @@ class TileEventDeck(TileEvent):
         # Move to the bottom of the deck
         self.deck.append(drawn)
 
-        return self.schema[drawn]
+        return [tuple([{'draw': self.schema[drawn]}])]
 
 
 class TileChance(TileEventDeck):
@@ -319,7 +324,7 @@ class EventFactory:
         elif schema['name'] == 'GO':
             return TileGO(schema)
 
-    def get_actions(self, token: str):
+    def get_action(self, token: str) -> list:
         raise NotImplementedError
 
 
