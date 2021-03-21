@@ -2,21 +2,24 @@ import abc
 import json
 import os
 import random
-from typing import Optional
+from typing import Optional, Dict
 
 from common import DATADIR, capacity
+from collections import namedtuple
+
+
+Action = namedtuple('Action', ['action', 'params'])
 
 
 class Tile(metaclass=abc.ABCMeta):
     def __init__(self):
         self.owner = None
 
-    @abc.abstractmethod
-    def get_action(self, token: str) -> list:
+    def get_action(self) -> list:
         """
         All available actions to this player
         """
-        raise NotImplementedError
+        return [Action(None, {})] # Do nothing
 
     def value_to(self, token: str, ntile: int) -> float:
         """
@@ -49,13 +52,20 @@ class TilePurchasable(Tile):
         """
         Return a list of valid actions for the visitor
         """
+        actions = super().get_action()
+
+        action_purchasable = []
         if self.owner and visitor != self.owner:
-            return [tuple(['pay', {'payer': visitor, 'payee': self.owner}])]
+            action_purchasable = [
+                tuple(['pay', {'payer': visitor, 'payee': self.owner}])]
         elif not self.owner:
-            return [tuple(['acquire', {'tile': self.name}])]
+            action_purchasable = [
+                tuple(['acquire', {'tile': self.name}])]
+        else:
+            action_purchasable = [
+                Action('liquidate_title', {'tile': self.name})]
 
-        return None
-
+        return actions + action_purchasable
 
 class TileProperty(TilePurchasable):
     def __init__(self, schema: dict):
@@ -77,25 +87,24 @@ class TileProperty(TilePurchasable):
         Return a list of valid actions for the visitor
         """
         actions = super().get_action(visitor)
-
-        if actions[0] == 'liquidate_title':
+        if actions[1].action == 'liquidate_title':
             # Maximum of 1 hotel and 4 houses
             if self.construct_count['house'] < 4:
                 for i in range(1, self.construct_count['house'] + 1):
                     actions += [
-                        tuple(['sell_construct', {'type': 'house', 'amt': i}])]
+                        Action('sell_construct', {'type': 'house', 'amt': i})]
 
                 for i in range(1, 5 - self.construct_count['house']):
                     actions += [
-                        tuple(['add_construct', {'type': 'house', 'amt': i}])]
+                        Action('add_construct', {'type': 'house', 'amt': i})]
 
             if self.construct_count['house'] == 4 and \
                 not self.construct_count['hotel']:
                 actions += [
-                    tuple(['add_construct', {'type': 'hotel', 'amt': 1}])]
+                    Action('add_construct', {'type': 'hotel', 'amt': 1})]
             elif self.construct_count['hotel']:
                 actions += [
-                    tuple(['sell_construct', {'type': 'hotel', 'amt': 1}])]
+                    Action('sell_construct', {'type': 'hotel', 'amt': 1})]
 
         return actions
 
@@ -118,12 +127,9 @@ class TileProperty(TilePurchasable):
     def liquidate_title(self) -> int:
         """
         Sell this tile. Returns the proceeds from the sale
-        TODO: This should also recursively sell all constructs
+        NOTE: Agent is responsible for evaluating each sale of construct until
+        there is none left before selling the title
         """
-        construct = sum([v for k, v in self.construct_count.items()])
-        if construct:
-            raise Exception('Tile is not empty of constructs')
-
         self.owner = None
         return self.cost['title']
 
@@ -164,7 +170,7 @@ class TileProperty(TilePurchasable):
 
         self.construct_count[contype] += qty
 
-        return self.cost[contype]
+        return self.cost[contype] * qty
 
 
 class TileInfra(TilePurchasable):

@@ -98,7 +98,7 @@ class Board:
     def __init__(self, lst_player: Sequence[List[str]], schema: dict):
         self.dct_actions = {
             'acquire': self.player_buy,
-            'add_construct': None,
+            'add_construct': self.player_construct,
             'liquidate_title': self.player_sell,
             'pay': self.transact,
             'sell_construct': None,
@@ -230,7 +230,7 @@ class Board:
         makes the decision on which asset to liquidate next.
         Returns True if player's balance returns to positive, else False
         """
-        # TODO: the player instance should inherit both the Player class and
+        # NOTE: the player instance should inherit both the Player class and
         # the Agent class. cp_asset_sale should compute the list of assets to
         # be sold based on its Agent strategy
         assets = player.cp_asset_sale(-player.balance)
@@ -306,6 +306,13 @@ class Board:
         tile.owner = None
         # Update property group dict
         self.colorgrp[tile.color][player.token] -= 1
+
+    def player_construct(self, tile: Tile, player: Player, **kwargs) -> None:
+        """
+        Add houses/ hotels to the tile
+        """
+        cost = tile.add_construct(kwargs['type'], kwargs['amt'])
+        player.balance -= cost
 
     def roll_till_move(self, player: Player) -> None:
         """

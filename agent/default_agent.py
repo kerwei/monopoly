@@ -34,3 +34,21 @@ class NaiveAgent(Agent):
             i += 1
 
         return None if not combi else combi
+
+    def cp_take_action(self, lst_action: List) -> int:
+        """
+        Default strategy: Buy anything while enough cash, else do nothing.
+        Return the list index of the action
+        NOTE: Actions requiring payments will not be evaluated by this method.
+        Given the non-exclusion nature of payments, the player's balance will
+        be deducted as it happens, or the call to compute liquidate_assets will
+        be invoked.
+        """
+        for action in lst_action:
+            if action.action == 'acquire':
+                return action
+
+            if action.action == 'add_construct':
+                return action
+
+        return lst_action[0]    # Do nothing

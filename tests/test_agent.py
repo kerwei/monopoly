@@ -1,6 +1,7 @@
 import json
 import os
 import unittest
+from unittest.loader import getTestCaseNames
 
 import agent
 import board
@@ -64,3 +65,24 @@ class TestAgent(unittest.TestCase):
         arr_sell = board.players['apple'].cp_asset_sale(2500)
 
         self.assertSetEqual(set(arr_sell), {8, 28})
+
+    def test_naive_cp_take_action_one(self):
+        """
+        Naive agent will always choose to buy tiles/ install constructs as long
+        as it has sufficient balance
+        """
+        gameboard = self.new_board
+        apple = gameboard.players['apple']
+        gameboard.move_to_index(apple, 8)   # Owned by apple
+
+        tileon = gameboard.lst_tile[gameboard.player_location['apple']]
+        lst_actions = tileon.get_action('apple')
+
+        constructs = {k: v for k,v in tileon.construct_count.items()}
+        choice = apple.cp_take_action(lst_actions)
+        action = gameboard.dct_actions[choice.action]
+
+        action(tileon, apple, **choice.params)
+        self.assertTrue(
+            any([tileon.construct_count['house'] > constructs['house'],
+                tileon.construct_count['hotel'] > constructs['hotel']]))
