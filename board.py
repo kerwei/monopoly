@@ -12,6 +12,7 @@ import tile
 from player import Player
 from tile import Tile, TileFactory
 
+
 class ItemCycler:
     def __init__(self, lst_items: list):
         self.roll = cycle(lst_items)
@@ -272,12 +273,10 @@ class Board:
         this_player_tile = self.lst_tile[
             self.player_location[this_player.token]]
         lst_actions = this_player_tile.get_action(this_player)
-        # Evaluate the available actions
-        # TODO: Create a method to pack each method with the required params
-
+        # Add the do-nothing to the list of available actions
         lst_actions = [(self.dct_actions[x[0]], x[1]) for x in lst_actions] + \
             [(self.dct_actions['do_nothing'], None)]
-
+        # Evaluate the available actions
         next_action = this_player.cp_take_action(lst_actions)
         action, params = next_action
         action(**params)
